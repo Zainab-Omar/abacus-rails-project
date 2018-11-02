@@ -27,7 +27,7 @@ class GroupsController < ApplicationController
   end
 
   def create
-    @group = Group.new(group_params)
+    @group = current_user.groups.build(group_params)
     if @group.valid?
       @group.save
       @membership = current_user.memberships.build(:group_id => @group.id)
@@ -78,7 +78,7 @@ class GroupsController < ApplicationController
 
 #strong params
   def group_params
-    params.require(:group).permit(:name, :status, :term)
+    params.require(:group).permit(:name, :status, :memberships_count ,:term)
   end
   #params that get passed mist conatin a key called group
 
