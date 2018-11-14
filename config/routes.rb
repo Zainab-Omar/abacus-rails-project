@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root to: 'application#home'
+
   #new user sign up page
   get '/signup' => 'users#new'
 
@@ -14,14 +15,17 @@ Rails.application.routes.draw do
 
   resources :users, only: [:create, :show]
 
+  #route for most_popular group list
   get '/groups/most_popular' => 'groups#most_popular'
+  #route for just group expense list for jquery
+  get '/groups/:id/lists' => 'groups#list'
+
 
   resources :groups, except: [:show]  do
-    resources :expenses, except: [:show]
+    resources :expenses
   end
 
   resources :groups, only: [:show]
 
   resources :memberships, only: [:new, :create] #-> domain.com/2/memberships/new
-
 end

@@ -1,14 +1,14 @@
-<%= form_for @group do |f| %>
-  <%= f.label :name %><br>
-  <%= f.text_field :name %><br>
+<div class= "group-form">
+  <%= form_for @group do |f| %>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+    <%= f.label :status %>
+    <%= f.radio_button :status, 0, checked: true %>
+    <%= f.label "Active" %>
 
-  <br>
-  <%= f.label :status %>
-  <%= f.radio_button :status, 0, checked: true %>
-  <%= f.label "Active" %>
+    <%= f.radio_button :status, 1 %>
+    <%= f.label "Inactive" %>
 
-  <%= f.radio_button :status, 1 %>
-  <%= f.label "Inactive" %><br><br>
-
-  <%= f.submit 'Submit', :class => 'button-3' %><%= link_to 'Cancel', groups_path, class: 'button-2' %><br>
-<% end %>
+    <%= f.submit 'Submit', :class => 'button-3', :id => 'submit-group' %><%= link_to 'Cancel', root_path, :class => 'button-2', :id => 'cancel-group' %><br>
+  <% end %>
+</div>

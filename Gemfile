@@ -34,6 +34,7 @@ gem 'omniauth'
 gem 'omniauth-github'
 gem 'dotenv-rails'
 gem 'loofah', '>= 2.2.3'
+gem 'active_model_serializers'
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'

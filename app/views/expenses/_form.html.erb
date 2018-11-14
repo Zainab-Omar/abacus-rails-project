@@ -1,26 +1,26 @@
-<% if @expense.errors.any? %>
-  <div id="error_explanation">
-    <ul>
-    <% @expense.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
-    <% end %>
-    </ul>
-  </div>
-<% end %>
-
-<h3>For <%= @expense.group.name %></h3><br>
-
-<%= form_for [@group, @expense] do |f| %>
-  <%= f.label :description %><br>
-  <%= f.text_field :description%><br>
-  <%= f.label :amount %><br>
-  <%= f.text_field :amount, value: number_to_currency(f.object.amount.to_f, delimiter: '', unit: ''), step: :any %><br><br>
-  <%= f.label "Please Select Or Create A Category" %><br>
-  <%= f.text_field :category_name, list: "categories_autocomplete" %>
-    <datalist id="categories_autocomplete">
-      <% Category.all.uniq.each do |category| %>
-        <option value="<%= category.name %>">
+<div class= "expense-form">
+  <% if @expense.errors.any? %>
+    <div id="error_explanation">
+      <ul>
+      <% @expense.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
       <% end %>
-    </datalist><br><br>
-  <%= f.submit 'Submit', :class => 'button-3' %> <%= link_to "Cancel", group_expenses_path, class: 'button-2' %><br>
-<% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form_for [@group, @expense] do |f| %>
+    <%= f.label :description %>
+    <%= f.text_field :description%>
+    <%= f.label :amount %>
+    <%= f.text_field :amount, value: number_to_currency(f.object.amount.to_f, delimiter: '', unit: ''), step: :any %><br><br>
+    <%= f.label "Please Select Or Create A Category" %><br>
+    <%= f.text_field :category_name, list: "categories_autocomplete" %>
+      <datalist id="categories_autocomplete">
+        <% Category.all.uniq.each do |category| %>
+          <option value="<%= category.name %>">
+        <% end %>
+      </datalist><br><br>
+    <%= f.submit 'Submit', :class => 'button-3', :id => 'submit-expense'%> <%= link_to "Cancel", group_expenses_path, class: 'button-2', id: 'cancel-add-expense' %><br>
+  <% end %>
+</div>

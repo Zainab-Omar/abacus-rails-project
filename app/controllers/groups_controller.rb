@@ -1,25 +1,23 @@
 class GroupsController < ApplicationController
   before_action :authenticate_user #Rails runs a check before any controller action
-  before_action :set_group, only: [:show, :edit, :update, :destroy]
+  before_action :set_group, only: [:show, :edit, :update, :destroy, :list]
 
   def index
     @groups = Group.search(params[:term])
   end
 
-  def most_popular
-    @groups = if params[:term]
-      Group.where('name LIKE ?', "%#{params[:term]}%")
-    else
-      Group.all
-    end
-  end
-
   def new
     @group = Group.new
+    render :layout => false
   end
 
   def show
     # @group = Group.find_by(id: params[:id])
+    respond_to do |format|
+      format.html {render :show, :layout => false}
+      format.json {render json: @group, :layout => false}
+    end
+
     if @group.nil?
       redirect_to groups_path
       flash[:error] = "Group Not Found"
@@ -38,7 +36,6 @@ class GroupsController < ApplicationController
       redirect_to current_user
     else
       flash[:error] = "Group Name Can't Be Blank"
-      render 'new'
     end
   end
 
@@ -54,6 +51,7 @@ class GroupsController < ApplicationController
 
   def edit
     # @group = Group.find_by(id: params[:id])
+    render :layout => false
     if @group.nil?
       redirect_to groups_path
       flash[:error] = "Group Not Found"
@@ -68,6 +66,14 @@ class GroupsController < ApplicationController
     @group.destroy
     flash[:notice] = "Successfully Deleted Group"
     redirect_to current_user
+  end
+
+  def most_popular
+    @groups = if params[:term]
+      Group.where('name LIKE ?', "%#{params[:term]}%")
+    else
+      Group.all
+    end
   end
 
   private

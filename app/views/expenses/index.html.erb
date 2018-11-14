@@ -1,21 +1,28 @@
-<% if @group.users.first == current_user%>
-  <h1 class = "wrapper"><%= @group.name %> <%= link_to '', edit_group_path(@group), class: 'glyphicon glyphicon-pencil' %></h1><br>
-<% else %>
-  <h1 class = "wrapper"><%= @group.name %></h1><br>
-<%end%>
-  <% if @expenses.empty? %>
-  <div class="wrapper">
-    <h4>There are no expenses for this group</h4><br>
-    <%= link_to "Add New Expense", new_group_expense_path(@group), class: 'button-1'%>
+<div class= "wrapper">
+  <% if @group.users.first == current_user%>
+    <h1><%= @group.name %></h1><br>
+  <% else %>
+    <h1><%= @group.name %></h1><br>
+  <%end%>
+
+  <div class="expense-form">
+    <%= render 'form' %>
   </div>
+
+  <% if @expenses.empty? %>
+    <h4>There are no expenses for this group</h4><br>
+
+    <%= link_to "Add New Expense", new_group_expense_path(@group), class: 'button-1', id: 'add-expense-form' %>
   <% else %>
 
     <% if @group.users.include?(current_user) %>
-      <%= render :partial => 'table' %>
-      <h3 class="wrapper"><strong>TOTAL AMOUNT: </strong><%= number_to_currency(@group.total_expenses)%></h3>
-      <div class="wrapper">
-        <%= link_to "Add New Expense", new_group_expense_path(@group), class: 'button-1'%>
+      <div class="new-added-expense">
       </div>
+      <%= render :partial => 'table' %>
+      <!-- <h3 class="wrapper"><strong>TOTAL AMOUNT: </strong><%= number_to_currency(@group.total_expenses)%></h3> -->
+
+      <!-- <%= link_to "Add New Expense", new_group_expense_path(@group), class: 'button-1', id: 'add-expense-form' %> -->
+
     <% else %>
     <table class="table table-bordered table-striped">
       <thead>
@@ -25,17 +32,21 @@
         </tr>
       </thead>
       <tbody>
-        <%@expenses.each do |expense|%>
-          <tr>
-            <td><%= expense.description%></td>
-            <td><%= expense.category_name %></td>
-          </tr>
-        <%end %>
+          <%@expenses.each do |expense|%>
+            <tr>
+              <td><%= expense.description%></td>
+              <td><%= expense.category_name %></td>
+            </tr>
+          <%end %>
       </tbody>
     </table>
 
     <%end %>
   <%end %><br>
-  <div class="wrapper">
-    <%= link_to "Group Summary", group_path(@group), class: 'button-1'%>
+
+    <%= link_to "Group Summary", group_path(@group), class: 'button-1', id: 'group-summary' %>
+
+<!--Hook: a container to inject the data/response-->
+  <div class= "summary" >
   </div>
+</div>

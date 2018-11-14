@@ -235,6 +235,7 @@ th {
     cursor: pointer;
   }
 
+
   .button-1:hover, .button-1:active {
     background-color: #e0e0e0;
     color: white;

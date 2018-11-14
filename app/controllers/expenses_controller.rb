@@ -14,7 +14,13 @@ class ExpensesController < ApplicationController
       redirect_to groups_path
       flash[:error] = "You do not have permission to view this group"
     else
+      @expense = Expense.new
       @expenses = @group.expenses.order("#{sort_column} #{sort_direction}")
+      respond_to do |format|
+        format.html {render :index }
+        format.json {render json: @expenses}
+      end
+        # render :json => @expenses, include: 'category', fields: { category: ['name'] }
     end
   end
 
@@ -22,6 +28,7 @@ class ExpensesController < ApplicationController
     # @group = current_user.groups.find_by(id: params[:group_id])
     if @group
       @expense = @group.expenses.new
+      render :layout => false
     else
       redirect_to groups_path
     end
@@ -34,9 +41,13 @@ class ExpensesController < ApplicationController
     if @expense.valid?
       @expense.save
       flash[:notice] = "Successfully Created An Expense"
-      redirect_to group_expenses_path(@group) #Group/expense show page
+      # I need to render something that just jas the elements I want...
+      # create a expenses/show view that shows the elements of one expense
+      render 'expenses/show', :layout => false
+      # redirect_to group_expenses_path(@group) #Group/expense show page
     else
-      render 'new'
+      flash[:error] = "Please fill in all fields"
+      redirect_to group_expenses_path(@group)
     end
   end
 
@@ -51,6 +62,7 @@ class ExpensesController < ApplicationController
     else
       @expense = @group.expenses.find_by(id: params[:id])
       @categories = Category.all.map{|c| [ c.name, c.id ] }
+      render :layout => false
         if @expense.nil?
           redirect_to group_expenses_path
           flash[:error] = "Expense Not Found For This Group"

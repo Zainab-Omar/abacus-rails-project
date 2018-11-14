@@ -12,7 +12,7 @@ class MembershipsController < ApplicationController
     if @membership.valid?
       @membership.save
       flash[:notice] = "You have joined this group."
-      redirect_to group_path(@group)
+      redirect_to group_expenses_path(@group)
     else
       flash[:error] = "Unable to join."
       redirect_to group_path(@group)
