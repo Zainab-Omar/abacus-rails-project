@@ -16,6 +16,7 @@ class GroupsController < ApplicationController
 
   def new
     @group = Group.new
+    render :layout => false
   end
 
   def show
