@@ -16,6 +16,8 @@ class GroupsController < ApplicationController
 
   def new
     @group = Group.new
+    render :layout => false
+    # render :json => @group
   end
 
   def show
