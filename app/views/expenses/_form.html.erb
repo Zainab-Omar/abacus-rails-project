@@ -8,8 +8,6 @@
   </div>
 <% end %>
 
-<h3>For <%= @expense.group.name %></h3><br>
-
 <%= form_for [@group, @expense] do |f| %>
   <%= f.label :description %><br>
   <%= f.text_field :description%><br>

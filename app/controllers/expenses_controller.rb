@@ -14,6 +14,7 @@ class ExpensesController < ApplicationController
       redirect_to groups_path
       flash[:error] = "You do not have permission to view this group"
     else
+      @expense = Expense.new
       @expenses = @group.expenses.order("#{sort_column} #{sort_direction}")
     end
   end

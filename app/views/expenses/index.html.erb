@@ -6,7 +6,7 @@
   <% if @expenses.empty? %>
   <div class="wrapper">
     <h4>There are no expenses for this group</h4><br>
-    <%= link_to "Add New Expense", new_group_expense_path(@group), class: 'button-1'%>
+    <%= render 'form' %>
   </div>
   <% else %>
 
