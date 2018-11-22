@@ -54,18 +54,33 @@ var attachListeners = function() {
     constructor(json) {
       this.description = json.description;
       this.amount = json.amount;
-      this.date = json.created_at;
+      this.date = formatDate(json.created_at);
       this.category_name = json.category.name;
     }
   }
   //end of class Expense
+
+  function formatDate(date) {
+    var d = new Date(date)
+    debugger
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [month, day, year].join('/');
+  }
+  // end of formatDate
+
 
 
   Expense.prototype.updateHtml = function(){
 
       let trHTML = "";
       trHTML += '<tr><td>' + this.description + '</td><td> $' + this.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</td><td>'
-      trHTML += this.date+ '</td><td>' + this.category_name + '</td>'
+      trHTML += this.date + '</td><td>' + this.category_name + '</td>'
       trHTML += '<td> Edit </td>'+ '<td> Delete </td></tr>';
       $("#groups-exp").append(trHTML)
   }
