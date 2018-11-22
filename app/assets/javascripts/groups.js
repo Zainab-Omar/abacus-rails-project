@@ -90,6 +90,45 @@ function attachGroupListeners(){
     event.preventDefault();
   })
   //end of cancel-group
+
+  // $("#pencil-icon").on("click", function(event) {
+  //   alert("Edit time")
+  //   $("div.group-form").hide();
+  //   debugger
+  //   $.ajax({
+  //     type: "POST",
+  //     url: this.href,
+  //     data: $(this).serialize(),
+  //     success: function(response){
+  //       console.log(response)
+  //       debugger
+  //     }
+  //     //end of success
+  //   })
+  //   //end of ajax call
+  //   event.preventDefault();
+  // })
+  // //end of pencil-icon
+
+  $("#pencil-icon").on("click", function(event) {
+    debugger
+    let pencilIcon = $(this);
+    let url = this.href
+    debugger
+    $.get(url, function(response){
+      $(".group-form").hide();
+      $(".edit-group").html(response)
+      debugger
+    })
+    event.preventDefault();
+  })
+  //end of pencil-icon
+
+  $("#trash-icon").on("click", function(event) {
+    alert("ready to delete")
+    event.preventDefault();
+  })
+  //end of trash icon
 }
 //end of attachGroupListeners
 
