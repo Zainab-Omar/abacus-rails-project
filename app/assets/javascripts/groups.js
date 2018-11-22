@@ -91,38 +91,24 @@ function attachGroupListeners(){
   })
   //end of cancel-group
 
-  // $("#pencil-icon").on("click", function(event) {
-  //   alert("Edit time")
-  //   $("div.group-form").hide();
-  //   debugger
-  //   $.ajax({
-  //     type: "POST",
-  //     url: this.href,
-  //     data: $(this).serialize(),
-  //     success: function(response){
-  //       console.log(response)
-  //       debugger
-  //     }
-  //     //end of success
-  //   })
-  //   //end of ajax call
-  //   event.preventDefault();
-  // })
-  // //end of pencil-icon
-
-  $("#pencil-icon").on("click", function(event) {
+  $("a#pencil-icon").on("click", function(event) {
     debugger
     let pencilIcon = $(this);
     let url = this.href
-    debugger
     $.get(url, function(response){
       $(".group-form").hide();
       $(".edit-group").html(response)
-      debugger
     })
     event.preventDefault();
   })
   //end of pencil-icon
+
+  // $("div.group-form form.edit_group").on("submit", function(event){
+  //   debugger
+  //   console.log(this)
+  //   event.preventDefault();
+  // })
+  // end of edit group form
 
   $("#trash-icon").on("click", function(event) {
     alert("ready to delete")
@@ -146,6 +132,19 @@ class Group{
   }
 }
 //end of class Group
+
+// function formatDate(date) {
+//   var d = new Date(date || Date.now()),
+//       month = '' + (d.getMonth() + 1),
+//       day = '' + d.getDate(),
+//       year = d.getFullYear();
+//
+//   if (month.length < 2) month = '0' + month;
+//   if (day.length < 2) day = '0' + day;
+//
+//   return [month, day, year].join('/');
+// }
+// // end of formatDate
 
 // Group.prototype.updateList = function(){
 //     let trHTML = "";
