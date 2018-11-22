@@ -4,10 +4,10 @@ $(document).ready(function(){
   attachGroupListeners();
 })
 
-// function loadGroups(){
-//   debugger
-//
-// }
+function loadGroups(){
+  debugger
+
+}
 //end of loadGroups
 
 //submits new Group
@@ -22,17 +22,15 @@ function createGroup() {
         // empties the input after successful action
         $("#group_name").val("")
         let group = new Group(response)
-        debugger
-        console.log(response)
         let trHTML = "";
             trHTML += '<tr><td>' + group.name + '</td><td>' + group.status + '</td>'
             trHTML += '<td>' + `<a class="glyphicon glyphicon-eye-open" id="eye-icon" href="/groups/${group.id}"></a>` + '</td>'
             trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${group.id}/edit">` +  '</td>'
             trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${group.id}"></a>` + '</td></tr>'
         if (group.status === "Active") {
-          $("div.active_groups table").append(trHTML)
+          $("div.active_groups table").prepend(trHTML)
         } else {
-          $("div.inactive_groups table").append(trHTML)
+          $("div.inactive_groups table").prepend(trHTML)
         }
         //end of if else
       }
@@ -54,6 +52,7 @@ function attachGroupListeners(){
 
   $("a#pencil-icon").on("click", function(event) {
     debugger
+    event.preventDefault();
     let pencilIcon = $(this);
     let url = this.href
     $.get(url, function(response){
@@ -80,7 +79,6 @@ function attachGroupListeners(){
 
 class Group{
   constructor(json) {
-    debugger
     this.id = json.id;
     this.name = json.name;
     if (json.status === 0){

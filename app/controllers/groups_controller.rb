@@ -78,9 +78,6 @@ class GroupsController < ApplicationController
     end
   end
 
-  def summary
-  end
-
   private
 
   def set_group

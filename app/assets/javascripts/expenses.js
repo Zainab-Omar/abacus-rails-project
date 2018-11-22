@@ -60,7 +60,6 @@ var attachListeners = function() {
   // })
   //end of js-more
 
-
 }
 //end of attachListeners
 
@@ -72,9 +71,6 @@ function loadExpenses(){
     //json object json = [{}, {}, {}]
     let $table = $("#groups-exp")
     let trHTML = "";
-    debugger
-    let $total = $("div.total")
-    debugger
     //iterate over each expense within json
     // Req 2: Renders a has-many relationship from a JSON response
     response.forEach(function(expense){
@@ -83,7 +79,6 @@ function loadExpenses(){
       trHTML += formatDate(expense.created_at) + '</td><td>' + expense.category.name + '</td>'
       trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${expense.group.id}/expenses/${expense.id}/edit">` + '</td>'
       trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${expense.group.id}/expenses/${expense.id}"></a>` + '</td></tr>';
-      debugger
     })
     $table.append(trHTML)
   })

@@ -3,21 +3,22 @@
   <div class="edit-group">
 
   </div>
-    
+
   <div class="group-form">
     <%= render 'groups/form' %><br>
   </div>
 
   <div class="groups-container">
-  </div>
 
-  <h3>Here Are Your Most Recent Groups:</h3>
-  <div class="active_groups">
-    <%= render partial: 'groups/table', locals: {groups: @groups.active_groups.recent}%>
-  </div>
-  <br>
+    <h3>Here Are Your Most Recent Groups:</h3>
+    <div class="active_groups">
+      <%= render partial: 'groups/table', locals: {groups: @groups.active_groups.recent}%>
+    </div>
+    <br>
 
-  <h3>Inactive groups:</h3>
-  <div class="inactive_groups">
-    <%= render partial: 'groups/table', locals: {groups: @groups.inactive_groups.recent}%>
+    <h3>Inactive groups:</h3>
+    <div class="inactive_groups">
+      <%= render partial: 'groups/table', locals: {groups: @groups.inactive_groups.recent}%>
+    </div>
+    
   </div>
