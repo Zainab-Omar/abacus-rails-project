@@ -50,18 +50,31 @@ function attachGroupListeners(){
   })
   //end of cancel-group
 
-  $("a#pencil-icon").on("click", function(event) {
+  $("div.groups-container").on("click", "a#pencil-icon", (e)=> {
+    e.preventDefault();
     debugger
-    event.preventDefault();
-    let pencilIcon = $(this);
-    let url = this.href
+    let $pencilIcon = e.target
+    let url = $pencilIcon.href
+    debugger
     $.get(url, function(response){
       $(".group-form").hide();
       $(".edit-group").html(response)
     })
-    event.preventDefault();
+    // end of get call
   })
-  //end of pencil-icon
+
+  // $("a#pencil-icon").on("click", function(event) {
+  //   debugger
+  //   event.preventDefault();
+  //   let pencilIcon = $(this);
+  //   let url = this.href
+  //   $.get(url, function(response){
+  //     $(".group-form").hide();
+  //     $(".edit-group").html(response)
+  //   })
+  //   event.preventDefault();
+  // })
+  // //end of pencil-icon
 
   // $("div.edit-group div.group-form form.edit_group").on("submit", function(event){
   //   debugger
