@@ -67,11 +67,11 @@ function createGroup() {
         // empties the input after successful action
         $("#group_name").val("")
         let group = new Group(response)
-        let groupId = group.id
         let trHTML = "";
             trHTML += '<tr><td>' + group.name + '</td><td>' + group.status + '</td>'
             trHTML += '<td>' + `<a class="glyphicon glyphicon-eye-open" id="eye-icon" href="/groups/${group.id}"></a>` + '</td>'
-            trHTML += '<td> Edit </td>'+ '<td> Delete </td></tr>'
+            trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${group.id}/edit">` +  '</td>'
+            trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${group.id}"></a>` + '</td></tr>'
         if (group.status === "Active") {
           $("div.active_groups table").append(trHTML)
         } else {
