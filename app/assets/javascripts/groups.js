@@ -43,7 +43,7 @@ function loadExpenses(){
     // Req 2: Renders a has-many relationship from a JSON response
     response.forEach(function(expense){
       trHTML += '<tr><td>' + expense.description + '</td><td> $' + expense.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</td><td>'
-      trHTML += expense.created_at + '</td><td>' + expense.category.name + '</td>'
+      trHTML += formatDate(expense.created_at) + '</td><td>' + expense.category.name + '</td>'
       trHTML += '<td> Edit </td>'+ '<td> Delete </td></tr>';
     })
     $table.append(trHTML)
