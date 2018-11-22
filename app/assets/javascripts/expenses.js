@@ -52,10 +52,13 @@ var attachListeners = function() {
 
   class Expense{
     constructor(json) {
+      debugger
+      this.id = json.id
       this.description = json.description;
       this.amount = json.amount;
       this.date = formatDate(json.created_at);
       this.category_name = json.category.name;
+      this.groupId = json.group.id;
     }
   }
   //end of class Expense
@@ -75,13 +78,14 @@ var attachListeners = function() {
   // end of formatDate
 
 
-
   Expense.prototype.updateHtml = function(){
 
       let trHTML = "";
       trHTML += '<tr><td>' + this.description + '</td><td> $' + this.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</td><td>'
       trHTML += this.date + '</td><td>' + this.category_name + '</td>'
-      trHTML += '<td> Edit </td>'+ '<td> Delete </td></tr>';
+      trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${this.groupId}/expenses/${this.id}/edit">` + '</td>'
+      trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${this.groupId}/expenses/${this.id}"></a>` + '</td></tr>';
+
       $("#groups-exp").append(trHTML)
   }
   //end of prototype updateHtml

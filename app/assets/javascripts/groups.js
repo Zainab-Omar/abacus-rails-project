@@ -42,9 +42,11 @@ function loadExpenses(){
     //iterate over each expense within json
     // Req 2: Renders a has-many relationship from a JSON response
     response.forEach(function(expense){
+      debugger
       trHTML += '<tr><td>' + expense.description + '</td><td> $' + expense.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</td><td>'
       trHTML += formatDate(expense.created_at) + '</td><td>' + expense.category.name + '</td>'
-      trHTML += '<td> Edit </td>'+ '<td> Delete </td></tr>';
+      trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${expense.group.id}/expenses/${expense.id}/edit">` + '</td>'
+      trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${expense.group.id}/expenses/${expense.id}"></a>` + '</td></tr>';
     })
     $table.append(trHTML)
   })
@@ -63,6 +65,8 @@ function createGroup() {
         // empties the input after successful action
         $("#group_name").val("")
         let group = new Group(response)
+        debugger
+        console.log(response)
         let trHTML = "";
             trHTML += '<tr><td>' + group.name + '</td><td>' + group.status + '</td>'
             trHTML += '<td>' + `<a class="glyphicon glyphicon-eye-open" id="eye-icon" href="/groups/${group.id}"></a>` + '</td>'
@@ -92,7 +96,6 @@ function attachGroupListeners(){
   //end of cancel-group
 
   $("a#pencil-icon").on("click", function(event) {
-    debugger
     let pencilIcon = $(this);
     let url = this.href
     $.get(url, function(response){
@@ -103,12 +106,12 @@ function attachGroupListeners(){
   })
   //end of pencil-icon
 
-  // $("div.group-form form.edit_group").on("submit", function(event){
+  // $("div.edit-group div.group-form form.edit_group").on("submit", function(event){
   //   debugger
   //   console.log(this)
   //   event.preventDefault();
   // })
-  // end of edit group form
+  // // end of edit group form
 
   $("#trash-icon").on("click", function(event) {
     alert("ready to delete")
@@ -132,27 +135,6 @@ class Group{
   }
 }
 //end of class Group
-
-// function formatDate(date) {
-//   var d = new Date(date || Date.now()),
-//       month = '' + (d.getMonth() + 1),
-//       day = '' + d.getDate(),
-//       year = d.getFullYear();
-//
-//   if (month.length < 2) month = '0' + month;
-//   if (day.length < 2) day = '0' + day;
-//
-//   return [month, day, year].join('/');
-// }
-// // end of formatDate
-
-// Group.prototype.updateList = function(){
-//     let trHTML = "";
-//     trHTML += '<tr><td>' + this.name + '</td><td> $' + this.status + '</td>'
-//     trHTML += '<td> View </td>'
-//     trHTML += '<td> Edit </td>'+ '<td> Delete </td></tr>';
-// }
-//end of prototype updateHtml
 
 // //Submits new expenses
 // $("form.new_expense").on("submit", function(event) {
