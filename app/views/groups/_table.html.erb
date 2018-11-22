@@ -1,6 +1,6 @@
 <table id="groups">
   <thead>
-    <tr>
+    <tr id="row1">
       <th><strong>Name</strong></th>
       <th><strong>Status</strong></th>
       <th><strong>View</strong></th>
@@ -12,10 +12,10 @@
   <tbody>
 
     <% groups.each do |group| %>
-      <tr>
+      <tr id="row2">
         <td><%= group.name%></td>
         <td><%= group.group_status %></td>
-        <td><%= link_to "", group_expenses_path(group), class: 'glyphicon glyphicon-eye-open', id: 'eye-icon' %></td>
+        <td><%= link_to "", group_path(group), class: 'glyphicon glyphicon-eye-open', id: 'eye-icon' %></td>
         <% if group.users.first == current_user %>
           <td><%= link_to "", edit_group_path(group), class: 'glyphicon glyphicon-pencil', id: 'pencil-icon' %></td>
           <td><%= link_to "", group_path(group), method: :delete, data: { confirm: "Are you sure?" }, class: 'glyphicon glyphicon-trash', id: 'trash-icon' %></td>

@@ -22,6 +22,7 @@ class UsersController < ApplicationController
     @user = User.find_by(id: params[:id])
     if @user && @user == current_user
       @groups = @user.groups
+      @group = Group.new
     else
       redirect_to root_path
     end

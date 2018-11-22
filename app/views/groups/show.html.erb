@@ -1,4 +1,16 @@
 <% if @group.users.include?(current_user) %>
+<h1 class= "wrapper"><%= @group.name%></h1>
+<br>
+  <!-- <%= link_to("Group Expenses", group_expenses_path(@group.id), :class => "button", :id => "load_expenses")%> -->
+
+  <div class="exp-container">
+    <%= render 'expenses/table'%>
+  </div>
+
+  <div class = "wrapper" id="expense-form-container">
+    <h4>Add New Expense</h4>
+    <%= render 'expenses/form' %>
+  </div>
 
   <%= render :partial => 'expenses/summary', :locals => {:group => @group} %>
 

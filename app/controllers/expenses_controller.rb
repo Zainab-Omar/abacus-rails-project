@@ -20,7 +20,10 @@ class ExpensesController < ApplicationController
         format.html {render :index }
         format.json {render json: @expenses}
       end
-        # render :json => @expenses, include: 'category', fields: { category: ['name'] }
+      # render :json => @expenses
+      # render :json => @expenses, include: 'category', fields: { category: ['name'] }
+      # render json: @expenses.to_json(only: [:id, :description, :amount, :created_at],
+      #                         include: [category: { only: [:name]}])
     end
   end
 
@@ -28,7 +31,10 @@ class ExpensesController < ApplicationController
     # @group = current_user.groups.find_by(id: params[:group_id])
     if @group
       @expense = @group.expenses.new
-      render :layout => false
+      respond_to do |format|
+        format.html {render :new}
+        format.json {render json: @expense}
+      end
     else
       redirect_to groups_path
     end
@@ -41,10 +47,16 @@ class ExpensesController < ApplicationController
     if @expense.valid?
       @expense.save
       flash[:notice] = "Successfully Created An Expense"
-      # I need to render something that just jas the elements I want...
+      # I need to render something that just has the elements I want...
       # create a expenses/show view that shows the elements of one expense
-      render 'expenses/show', :layout => false
+      # respond_to do |format|
+      #   format.html {render :index }
+      #   format.json {render json: @expense}
+      # end
+      render json: @expense
+      # render 'expenses/show', :layout => false
       # redirect_to group_expenses_path(@group) #Group/expense show page
+      # redirect_to @group
     else
       flash[:error] = "Please fill in all fields"
       redirect_to group_expenses_path(@group)

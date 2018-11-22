@@ -13,11 +13,13 @@ class GroupsController < ApplicationController
 
   def show
     # @group = Group.find_by(id: params[:id])
+    @expense = Expense.new
+    @expenses = @group.expenses
     respond_to do |format|
-      format.html {render :show, :layout => false}
-      format.json {render json: @group, :layout => false}
+      format.html {render :show}
+      format.json {render json: @group}
     end
-
+    # render json: @group, :layout => false
     if @group.nil?
       redirect_to groups_path
       flash[:error] = "Group Not Found"
@@ -33,7 +35,7 @@ class GroupsController < ApplicationController
         @membership.save
       end
       flash[:notice] = "Successfully Created A Group"
-      redirect_to current_user
+      render json: @group
     else
       flash[:error] = "Group Name Can't Be Blank"
     end

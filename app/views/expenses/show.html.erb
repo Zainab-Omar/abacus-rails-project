@@ -1,4 +1,8 @@
-<%= @expense.description%>
-<%= @expense.amount%>
-<%= @expense.created_at.strftime "%B %e, %Y" %>
-<%= @expense.category_name %>
+<tr>
+  <td> <%= @expense.description%> </td>
+  <td> <%= @expense.amount%> </td>
+  <td> <%= @expense.created_at.strftime "%B %e, %Y" %> </td>
+  <td> <%= @expense.category_name %> </td>
+  <td> Edit </td>
+  <td> Delete </td>
+</tr>

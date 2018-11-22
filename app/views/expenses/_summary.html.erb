@@ -7,8 +7,8 @@
     <tbody>
       <% group.expenses.group(:category).sum(:amount).each do |category, sum| %>
         <tr>
-          <td width="60%"><%= category.name %></td>
-          <td width="40%"><%= number_to_currency(sum) %></td>
+          <td width="60%" class="categoryName"><%= category.name %></td>
+          <td width="40%"class="expenseAmount"><%= number_to_currency(sum) %></td>
         </tr>
       <% end %>
     </tbody>
@@ -24,15 +24,15 @@
     <tbody>
         <tr>
           <td width="60%">Minimum Expense</td>
-          <td width="40%"><%= number_to_currency(group.min_expense) %></td>
+          <td width="40%" class="minExpense"><%= number_to_currency(group.min_expense) %></td>
         </tr>
         <tr>
           <td width="60%">Maximum Expense</td>
-          <td width="40%"><%= number_to_currency(group.max_expense) %></td>
+          <td width="40%" class="maxExpense"><%= number_to_currency(group.max_expense) %></td>
         </tr>
         <tr>
           <td width="60%">Average Expense</td>
-          <td width="40%"><%= number_to_currency(group.avg_expense) %></td>
+          <td width="40%" class="avgExpense"><%= number_to_currency(group.avg_expense) %></td>
         </tr>
     </tbody>
   </table>

@@ -1,5 +1,8 @@
-$(document).on('turbolinks:load', function(){
+$(document).ready(function(){
+  attachListeners();
+})
 
+var attachListeners = function() {
 // RENDER HTML
   $("a#group-summary").on("click", function(event){
     // the jquery object
@@ -16,104 +19,54 @@ $(document).on('turbolinks:load', function(){
     event.preventDefault();
   });
 
-  $("a#new_expense").on("submit", function(event) {
-    alert("You clicked Submit")
-    event.preventDefault();
-  })
 
-  // $("a#add-expense-form").on("click", function(event){
-  //   let $button = $(this)
-  //   let url = this.pathname
-  //   $.get(url, function(data){
-  //   }).success(function(data){
-  //     $("div.expense-form").append(data)
-  //     $button.hide();
-  //   })
-  //   .fail(function(data){
-  //     console.log("Error: " + data)
-  //   });
-  //   event.preventDefault();
-  // });
-
-  // $("a#cancel-add-expense").on("click", function(event){
-  //   let $button = $(this)
-  //   let url = this.pathname
-  //   $.get(url, function(data){
-  //   }).success(function(data){
-  //     $("div.expense-form").hide();
-  //   })
-  //   .fail(function(data){
-  //     console.log("Error: " + data)
-  //   });
-  //   event.preventDefault();
-  // });
-
-  $("form").on("submit", function(event) {
+  //Submits new expenses
+  $("form.new_expense").on("submit", function(event) {
     //1. we need URL to submit the POST request
     //2. we need the form data
     // Low Level
+    event.preventDefault();
     $.ajax({
-      type: ($("input[name='_method']").val() || this.method),
+      type: "POST",
       url: this.action,
       data: $(this).serialize(), //either JSON or querystring serializing
-      success: function(respsonse) {
-        debugger
+      success: function(response) {
+        // empties the input after successful action
         $("#expense_description").val("")
         $("#expense_amount").val("")
         $("#expense_category_name").val("")
-        var $expense = $("div.new-added-expense")
-        $expense.append(response)
+
+        let expense = new Expense(response)
+        expense.updateHtml()
       }
+      //end of success
     });
-
-    // send a POST request to the correct place that form would've gone too anyway
-    //along with the actual form data.
-    event.preventDefault();
+    //end of ajax
+    return false;
   })
+  //end of submit new expense
 
-  // $("#submit-expense").on("click", function(event) {
-  //   alert("You clicked Submit")
-  //   //1. we need URL to submit the POST request
-  //   console.log(this)
-  //   //2. we need the form data
-  //
-  //   // send a POST request to the correct place that form would've gone too anyway
-  //   //along with the actual form data.
-  //   event.preventDefault();
-  // })
 
-  $("a#pencil-icon").on("click", function(event){
-    let url = this.pathname;
+}
+//end of attachListeners
 
-    $.get(url, function(data){
-    }).success(function(data){
-      $("div.expense-form").empty()
-      $("div.expense-form").append(data)
-    })
-    .fail(function(data){
-      console.log("Error: " + data);
-    });
-    event.preventDefault();
-  });
+  class Expense{
+    constructor(json) {
+      this.description = json.description;
+      this.amount = json.amount;
+      this.date = json.created_at;
+      this.category_name = json.category.name;
+    }
+  }
+  //end of class Expense
 
-});
 
-//Submit Comments via AJAX
-// $("#new_expense").on("click", function(event) {
-//   alert("You clicked Submit")
-//   event.preventDefault();
-// })
-// $("form").submit(function(event) {
-//   alert("You clicked Submit")
-//   event.preventDefault();
-// })
-//
-//
-// class Expense{
-//   constructor(json){
-//     this.description = json.description
-//     this.amount = json.amount
-//     this.category.name = json.
-//
-//   }
-// }
+  Expense.prototype.updateHtml = function(){
+
+      let trHTML = "";
+      trHTML += '<tr><td>' + this.description + '</td><td> $' + this.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</td><td>'
+      trHTML += this.date+ '</td><td>' + this.category_name + '</td>'
+      trHTML += '<td> Edit </td>'+ '<td> Delete </td></tr>';
+      $("#groups-exp").append(trHTML)
+  }
+  //end of prototype updateHtml

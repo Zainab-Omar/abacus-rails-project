@@ -1,13 +1,4 @@
 <div class= "expense-form">
-  <% if @expense.errors.any? %>
-    <div id="error_explanation">
-      <ul>
-      <% @expense.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
 
   <%= form_for [@group, @expense] do |f| %>
     <%= f.label :description %>
@@ -21,6 +12,6 @@
           <option value="<%= category.name %>">
         <% end %>
       </datalist><br><br>
-    <%= f.submit 'Submit', :class => 'button-3', :id => 'submit-expense'%> <%= link_to "Cancel", group_expenses_path, class: 'button-2', id: 'cancel-add-expense' %><br>
+    <%= f.submit 'Submit', :class => 'button-3', :id => 'submit-expense'%> <%= link_to "Cancel", "", class: 'button-2', id: 'cancel-add-expense' %><br>
   <% end %>
 </div>
