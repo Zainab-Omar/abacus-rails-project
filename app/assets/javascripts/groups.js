@@ -26,15 +26,11 @@
 // });
 
 $(document).ready(function(){
-  loadGroups();
   loadExpenses();
   createGroup();
+  attachGroupListeners();
 })
 
-function loadGroups(){
-
-}
-//end of loadGroups
 
 function loadExpenses(){
   let url = this.location.href
@@ -84,9 +80,18 @@ function createGroup() {
     // end of ajax call
     return false;
   })
-
 }
 //end of createGroup
+
+function attachGroupListeners(){
+
+  $("#cancel-group").on("click", function(event) {
+    $("#group_name").val("")
+    event.preventDefault();
+  })
+  //end of cancel-group
+}
+//end of attachGroupListeners
 
 class Group{
   constructor(json) {
