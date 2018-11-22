@@ -44,7 +44,7 @@ class GroupsController < ApplicationController
   def update
     if @group.update(group_params)
       flash[:notice] = "Successfully Updated Group"
-      redirect_to group_expenses_path(@group)
+      redirect_to group_path(@group)
     else
       flash[:error] = "Group name can't be blank"
       render 'edit'
@@ -76,6 +76,9 @@ class GroupsController < ApplicationController
     else
       Group.all
     end
+  end
+
+  def summary
   end
 
   private

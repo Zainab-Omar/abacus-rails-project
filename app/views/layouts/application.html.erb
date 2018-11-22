@@ -18,7 +18,7 @@
 
 
     <% if current_user %>
-      <a href="<%= root_url %>" class = "button" />My Groups</a>
+      <a href="<%= root_url %>" class = "button" >My Groups</a>
       <%= link_to("All Groups", groups_path, :class => "button")%>
       <%= link_to("Log Out", logout_path, :class => "button") %>
     <% else %>

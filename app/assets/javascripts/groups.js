@@ -1,57 +1,14 @@
-// $(document).ready(function(){
-//   loadExpenses();
-  // Req 1: Renders index page of expenses through JS
-
-  // SHOWS EXPENSES ON GROUP SHOW PAGE BY CLICKING LINK
-  // const $loadExpensesButton = $("a#load_expenses")
-  //
-  // $("a#load_expenses").on("click", function(e) {
-  //   $.get(this.href).success(function(json) {
-  //     //json object json = [{}, {}, {}]
-  //     let $table = $("#expenses_table")
-  //     let trHTML = "";
-  //     //iterate over each expense within json
-  //     json.forEach(function(expense) {
-  //       //expense = {id: 72, description: "1", amount: 1, created_at: "2018-11-16T07:44:08.976Z", category: {…}}
-  //       trHTML += '<tr><td>' + expense.description + '</td><td>' + expense.amount + '</td><td>'
-  //       trHTML += expenseDate + '</td><td>' + expense.category.name + '</td>'
-  //       trHTML += '<td> Edit </td>'+ '<td> Delete </td></tr>';
-  //     });
-  //     $table.append(trHTML)
-  //     $loadExpensesButton.hide();
-  //   })
-  //   e.preventDefault();
-  // })
-
-// });
-
 $(document).ready(function(){
-  loadExpenses();
   createGroup();
+  // loadGroups();
   attachGroupListeners();
 })
 
-
-function loadExpenses(){
-  let url = this.location.href
-  url += "/expenses.json"
-  $.get(url, function(response){
-    //json object json = [{}, {}, {}]
-    let $table = $("#groups-exp")
-    let trHTML = "";
-    //iterate over each expense within json
-    // Req 2: Renders a has-many relationship from a JSON response
-    response.forEach(function(expense){
-      debugger
-      trHTML += '<tr><td>' + expense.description + '</td><td> $' + expense.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</td><td>'
-      trHTML += formatDate(expense.created_at) + '</td><td>' + expense.category.name + '</td>'
-      trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${expense.group.id}/expenses/${expense.id}/edit">` + '</td>'
-      trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${expense.group.id}/expenses/${expense.id}"></a>` + '</td></tr>';
-    })
-    $table.append(trHTML)
-  })
-}
-// end of loadExpenses
+// function loadGroups(){
+//   debugger
+//
+// }
+//end of loadGroups
 
 //submits new Group
 function createGroup() {
@@ -96,6 +53,7 @@ function attachGroupListeners(){
   //end of cancel-group
 
   $("a#pencil-icon").on("click", function(event) {
+    debugger
     let pencilIcon = $(this);
     let url = this.href
     $.get(url, function(response){
@@ -114,7 +72,6 @@ function attachGroupListeners(){
   // // end of edit group form
 
   $("#trash-icon").on("click", function(event) {
-    alert("ready to delete")
     event.preventDefault();
   })
   //end of trash icon

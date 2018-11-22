@@ -1,5 +1,6 @@
 <% if @group.users.include?(current_user) %>
 <h1 class= "wrapper"><%= @group.name%></h1>
+<a href="#" class="js-more btn btn-primary" data-id="<%= @group.id%>">Next Group</a><br>
 <br>
   <!-- <%= link_to("Group Expenses", group_expenses_path(@group.id), :class => "button", :id => "load_expenses")%> -->
 
@@ -12,11 +13,13 @@
     <%= render 'expenses/form' %>
   </div>
 
-  <%= render :partial => 'expenses/summary', :locals => {:group => @group} %>
+  <!--  <%= render :partial => 'expenses/summary', :locals => {:group => @group} %> -->
 
-<div class = "wrapper">
-    <h3><strong>Total Amount: </strong><%= number_to_currency(@group.total_expenses)%></h3>
-  <br>
+<!-- <div class = "wrapper">
+    <h3><strong>Total Amount: </strong>
+      <div class="total"><%= number_to_currency(@group.total_expenses)%></div>
+    </h3>
+  <br> -->
 
   <% else %>
   <h3 class = "wrapper"> To View Summary you need to be a member of this group</h3>

@@ -1,5 +1,6 @@
 $(document).ready(function(){
   attachListeners();
+  loadExpenses();
 })
 
 var attachListeners = function() {
@@ -46,13 +47,51 @@ var attachListeners = function() {
   })
   //end of submit new expense
 
+  // $("a.js-more").on("click", function(event) {
+  //   let id = $(".js-more").attr("data-id")
+  //   id = parseInt(id) + 1
+  //   console.log(id)
+  //   $.get("/groups/" + id + "/expenses", function(response) {
+  //     debugger
+  //     console.log(json)
+  //   })
+  //   //end of get call
+  //   event.preventDefault();
+  // })
+  //end of js-more
+
 
 }
 //end of attachListeners
 
+// Loads all expenses
+function loadExpenses(){
+  let url = this.location.href
+  url += "/expenses.json"
+  $.get(url, function(response){
+    //json object json = [{}, {}, {}]
+    let $table = $("#groups-exp")
+    let trHTML = "";
+    debugger
+    let $total = $("div.total")
+    debugger
+    //iterate over each expense within json
+    // Req 2: Renders a has-many relationship from a JSON response
+    response.forEach(function(expense){
+      debugger
+      trHTML += '<tr><td>' + expense.description + '</td><td> $' + expense.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</td><td>'
+      trHTML += formatDate(expense.created_at) + '</td><td>' + expense.category.name + '</td>'
+      trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${expense.group.id}/expenses/${expense.id}/edit">` + '</td>'
+      trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${expense.group.id}/expenses/${expense.id}"></a>` + '</td></tr>';
+      debugger
+    })
+    $table.append(trHTML)
+  })
+}
+// end of loadExpenses
+
   class Expense{
     constructor(json) {
-      debugger
       this.id = json.id
       this.description = json.description;
       this.amount = json.amount;
@@ -65,7 +104,6 @@ var attachListeners = function() {
 
   function formatDate(date) {
     var d = new Date(date)
-    debugger
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
         year = d.getFullYear();
