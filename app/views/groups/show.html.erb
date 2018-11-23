@@ -1,6 +1,13 @@
+<div class="wrapper", id="group-expenses-page">
 <% if @group.users.include?(current_user) %>
-<h1 class= "wrapper"><%= @group.name%></h1>
-<a href="#" class="js-more btn btn-primary" data-id="<%= @group.id%>">Next Group</a><br>
+
+<h1 data-groupId="<%= @group.id %>"><%= @group.name%></h1>
+
+<section class="next-previous">
+  <!-- next/previous buttons -->
+  <a href="#" class="js-more btn btn-primary", data-id="<%= @group.id %>", id="previous-button">Previous Group</a>
+  <a href="#" class="js-more btn btn-primary", data-id="<%= @group.id %>", id="next-button">Next Group</a><br>
+</section>
 <br>
   <!-- <%= link_to("Group Expenses", group_expenses_path(@group.id), :class => "button", :id => "load_expenses")%> -->
 

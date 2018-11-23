@@ -20,6 +20,8 @@ Rails.application.routes.draw do
   #route for just group expense list for jquery
   get '/groups/:id/lists' => 'groups#list'
 
+  get '/allgrouplist' => 'groups#index'
+
 
   resources :groups, except: [:show]  do
     resources :expenses

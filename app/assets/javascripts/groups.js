@@ -1,14 +1,32 @@
 $(document).ready(function(){
   createGroup();
-  // loadGroups();
+  // if(window.location.href.indexOf("users") > -1){
+  //   loadGroups();
+  // }
   attachGroupListeners();
 })
 
-function loadGroups(){
-  debugger
 
+// Loads all expenses
+function loadExpenses(){
+  let url = this.location.href
+  url += "/expenses.json"
+  $.get(url, function(response){
+    //json object json = [{}, {}, {}]
+    let $table = $("#groups-exp")
+    let trHTML = "";
+    //iterate over each expense within json
+    // Req 2: Renders a has-many relationship from a JSON response
+    response.forEach(function(expense){
+      trHTML += '<tr><td>' + expense.description + '</td><td> $' + expense.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</td><td>'
+      trHTML += formatDate(expense.created_at) + '</td><td>' + expense.category.name + '</td>'
+      trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${expense.group.id}/expenses/${expense.id}/edit">` + '</td>'
+      trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${expense.group.id}/expenses/${expense.id}"></a>` + '</td></tr>';
+    })
+    $table.append(trHTML)
+  })
 }
-//end of loadGroups
+// end of loadExpenses
 
 //submits new Group
 function createGroup() {
@@ -52,7 +70,6 @@ function attachGroupListeners(){
 
   $("div.groups-container").on("click", "a#pencil-icon", (e)=> {
     e.preventDefault();
-    debugger
     let $pencilIcon = e.target
     let url = $pencilIcon.href
     debugger
@@ -62,6 +79,21 @@ function attachGroupListeners(){
     })
     // end of get call
   })
+  //end of pencil icon
+
+  // $("div.groups-container").on("click", "a#trash-icon", (e)=> {
+  //   alert("You clicked me")
+  //   e.preventDefault();
+  //   let url = e.target.href
+  //   $.ajax({
+  //     type: "DELETE",
+  //     url: url,
+  //
+  //   })
+  //   debugger
+  // })
+  // //end of trash icon
+
 
   // $("a#pencil-icon").on("click", function(event) {
   //   debugger
@@ -83,10 +115,6 @@ function attachGroupListeners(){
   // })
   // // end of edit group form
 
-  $("#trash-icon").on("click", function(event) {
-    event.preventDefault();
-  })
-  //end of trash icon
 }
 //end of attachGroupListeners
 
