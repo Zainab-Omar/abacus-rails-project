@@ -49,7 +49,6 @@ var attachListeners = function() {
   })
   //end of submit new expense
 
-
   $(".wrapper").on("click", "#previous-button", function(e) {
     e.preventDefault();
     let previousId = parseInt($("#previous-button").attr("data-groupid"))-1
@@ -122,7 +121,7 @@ var attachListeners = function() {
 
 }
 //end of attachListeners
-
+//
 // Loads all expenses
 function loadExpenses(){
   let url = this.location.href
@@ -133,7 +132,7 @@ function loadExpenses(){
     let trHTML = "";
     //iterate over each expense within json
     // Req 2: Renders a has-many relationship from a JSON response
-    if (json.length){
+    if (json.length) {
       //checks if the json array is empty
       json.forEach(function(expense){
         trHTML += '<tr><td>' + expense.description + '</td><td> $' + expense.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</td><td>'
