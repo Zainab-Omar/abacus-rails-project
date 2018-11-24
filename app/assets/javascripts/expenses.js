@@ -49,68 +49,73 @@ var attachListeners = function() {
   })
   //end of submit new expense
 
-  $(".wrapper").on("click", "#previous-button", function(event) {
-    alert("PREVIOUS CLICKED")
-    event.preventDefault();
-    debugger
+  $(".wrapper").on("click", "#previous-button", function(e) {
+    e.preventDefault();
     let previousId = parseInt($("#previous-button").attr("data-id"))-1
-    loadExpenses(previousId)
-    // let id = $(".js-more").attr("data-id")
-    // id = parseInt(id) + 1
-    // console.log(id)
-    // $.get("/groups/" + id + "/expenses", function(response) {
-    //   debugger
-    //   console.log(json)
-    // })
-    // //end of get call
-    // event.preventDefault();
+    let url = "/groups/" + previousId + "/expenses.json"
+    $.get(url, function(json){
+      debugger
+      $("#group-name").text(json[0].group.name)
+      let $table = $("#groups-exp tbody")
+      $table.remove();
+      let trHTML = "";
+      if (json.length){
+        //checks if the json array is empty
+        json.forEach(function(expense){
+          trHTML += '<tr><td>' + expense.description + '</td><td> $' + expense.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</td><td>'
+          trHTML += formatDate(expense.created_at) + '</td><td>' + expense.category.name + '</td>'
+          trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${expense.group.id}/expenses/${expense.id}/edit">` + '</td>'
+          trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${expense.group.id}/expenses/${expense.id}"></a>` + '</td></tr>';
+        })
+        $("#groups-exp").append(trHTML)
+      }
+      //end of if
+    })
+    //end of get call
   })
   // end of previous-button
 }
 //end of attachListeners
 
 // Loads all expenses
-// function loadExpenses(groupId){
-//   debugger
-//   $.get("/groups/" + groupId + "/expenses.json", function(response){
-//     //json object json = [{}, {}, {}]
-//     let $table = $("#groups-exp")
-//     let trHTML = "";
-//     //iterate over each expense within json
-//     // Req 2: Renders a has-many relationship from a JSON response
-//     response.forEach(function(expense){
-//       trHTML += '<tr><td>' + expense.description + '</td><td> $' + expense.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</td><td>'
-//       trHTML += formatDate(expense.created_at) + '</td><td>' + expense.category.name + '</td>'
-//       trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${expense.group.id}/expenses/${expense.id}/edit">` + '</td>'
-//       trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${expense.group.id}/expenses/${expense.id}"></a>` + '</td></tr>';
-//     })
-//     $table.append(trHTML)
-//   })
-// }
-// end of loadExpenses
-
-
-// Loads all expenses
 function loadExpenses(){
-  debugger
   let url = this.location.href
   url += "/expenses.json"
-  $.get(url, function(response){
+  $.get(url, function(json){
+    debugger
     //json object json = [{}, {}, {}]
     let $table = $("#groups-exp")
     let trHTML = "";
     //iterate over each expense within json
     // Req 2: Renders a has-many relationship from a JSON response
-    response.forEach(function(expense){
-      trHTML += '<tr><td>' + expense.description + '</td><td> $' + expense.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</td><td>'
-      trHTML += formatDate(expense.created_at) + '</td><td>' + expense.category.name + '</td>'
-      trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${expense.group.id}/expenses/${expense.id}/edit">` + '</td>'
-      trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${expense.group.id}/expenses/${expense.id}"></a>` + '</td></tr>';
-    })
-    $table.append(trHTML)
+    if (json.length){
+      debugger
+      //checks if the json array is empty
+      json.forEach(function(expense){
+        trHTML += '<tr><td>' + expense.description + '</td><td> $' + expense.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</td><td>'
+        trHTML += formatDate(expense.created_at) + '</td><td>' + expense.category.name + '</td>'
+        trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${expense.group.id}/expenses/${expense.id}/edit">` + '</td>'
+        trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${expense.group.id}/expenses/${expense.id}"></a>` + '</td></tr>';
+      })
+      $table.append(trHTML)
+    } else {
+      debugger
+      $("div.exp-container").remove();
+    }
+    //end of if/else
   })
+
 }
 // end of loadExpenses
+
+// // Show all group expenses
+// function showExpenses(){
+//  debugger
+//  let url = this.location.href
+//  url += "/expenses.json"
+//
+// }
+// // end of showExpenses
 
   class Expense{
     constructor(json) {
