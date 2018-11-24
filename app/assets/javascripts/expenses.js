@@ -49,18 +49,28 @@ var attachListeners = function() {
   })
   //end of submit new expense
 
+
   $(".wrapper").on("click", "#previous-button", function(e) {
     e.preventDefault();
-    let previousId = parseInt($("#previous-button").attr("data-id"))-1
+    let previousId = parseInt($("#previous-button").attr("data-groupid"))-1
     let url = "/groups/" + previousId + "/expenses.json"
     $.get(url, function(json){
       debugger
       $("#group-name").text(json[0].group.name)
+      //update the data-group-id for all buttons
+      $("#group-name").attr("data-groupid", previousId)
+      $("#previous-button").attr("data-groupid", previousId)
+      $("#next-button").attr("data-groupid", previousId)
+      //update groupid for form
+      $("form.new_expense").attr("action", "/groups/" + previousId + "/expenses")
+      //update table groupid
+      $("#groups-exp").attr("data-groupid", previousId)
+
       let $table = $("#groups-exp tbody")
       $table.remove();
       let trHTML = "";
       if (json.length){
-        //checks if the json array is empty
+        // checks if the json array is empty
         json.forEach(function(expense){
           trHTML += '<tr><td>' + expense.description + '</td><td> $' + expense.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</td><td>'
           trHTML += formatDate(expense.created_at) + '</td><td>' + expense.category.name + '</td>'
@@ -69,11 +79,47 @@ var attachListeners = function() {
         })
         $("#groups-exp").append(trHTML)
       }
-      //end of if
+      // end of if
     })
     //end of get call
   })
   // end of previous-button
+
+  $(".wrapper").on("click", "#next-button", function(e) {
+    e.preventDefault();
+    let nextId = parseInt($("#previous-button").attr("data-groupid"))+1
+    let url = "/groups/" + nextId + "/expenses.json"
+    $.get(url, function(json){
+      debugger
+      $("#group-name").text(json[0].group.name)
+      //update the data-group-id for all buttons
+      $("#group-name").attr("data-groupid", nextId)
+      $("#previous-button").attr("data-groupid", nextId)
+      $("#next-button").attr("data-groupid", nextId)
+      //update groupid for form
+      $("form.new_expense").attr("action", "/groups/" + nextId + "/expenses")
+      //update table groupid
+      $("#groups-exp").attr("data-groupid", nextId)
+
+      let $table = $("#groups-exp tbody")
+      $table.remove();
+      let trHTML = "";
+      if (json.length){
+        // checks if the json array is empty
+        json.forEach(function(expense){
+          trHTML += '<tr><td>' + expense.description + '</td><td> $' + expense.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</td><td>'
+          trHTML += formatDate(expense.created_at) + '</td><td>' + expense.category.name + '</td>'
+          trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${expense.group.id}/expenses/${expense.id}/edit">` + '</td>'
+          trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${expense.group.id}/expenses/${expense.id}"></a>` + '</td></tr>';
+        })
+        $("#groups-exp").append(trHTML)
+      }
+      // end of if
+    })
+    //end of get call
+  })
+  // end of next-button
+
 }
 //end of attachListeners
 
@@ -82,14 +128,12 @@ function loadExpenses(){
   let url = this.location.href
   url += "/expenses.json"
   $.get(url, function(json){
-    debugger
     //json object json = [{}, {}, {}]
     let $table = $("#groups-exp")
     let trHTML = "";
     //iterate over each expense within json
     // Req 2: Renders a has-many relationship from a JSON response
     if (json.length){
-      debugger
       //checks if the json array is empty
       json.forEach(function(expense){
         trHTML += '<tr><td>' + expense.description + '</td><td> $' + expense.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</td><td>'
@@ -99,7 +143,6 @@ function loadExpenses(){
       })
       $table.append(trHTML)
     } else {
-      debugger
       $("div.exp-container").remove();
     }
     //end of if/else
