@@ -17,7 +17,7 @@ class ExpensesController < ApplicationController
       @expense = Expense.new
       @expenses = @group.expenses.order("#{sort_column} #{sort_direction}")
       respond_to do |format|
-        format.html {render :index }
+        format.html {render :index}
         format.json {render json: @expenses}
       end
       # render :json => @expenses
@@ -76,7 +76,7 @@ class ExpensesController < ApplicationController
       @categories = Category.all.map{|c| [ c.name, c.id ] }
       render :layout => false
         if @expense.nil?
-          redirect_to group_expenses_path
+          render json: @expense
           flash[:error] = "Expense Not Found For This Group"
         end
     end
@@ -87,7 +87,7 @@ class ExpensesController < ApplicationController
     # @expense = @group.expenses.find_by(id: params[:id])
     if @expense.update(expense_params)
       flash[:notice] = "Successfully Updated The Expense"
-      redirect_to group_expenses_path(@group)
+      redirect_to group_path(@group)
     else
       render 'edit'
     end

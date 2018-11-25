@@ -22,32 +22,31 @@ var attachListeners = function() {
   //   event.preventDefault();
   // });
 
-
   //Submits new expenses
-  $("form.new_expense").on("submit", function(event) {
-    //1. we need URL to submit the POST request
-    //2. we need the form data
-    // Low Level
-    event.preventDefault();
-    $.ajax({
-      type: "POST",
-      url: this.action,
-      data: $(this).serialize(), //either JSON or querystring serializing
-      success: function(response) {
-        // empties the input after successful action
-        $("#expense_description").val("")
-        $("#expense_amount").val("")
-        $("#expense_category_name").val("")
+   $("form.new_expense").on("submit", function(event) {
+     //1. we need URL to submit the POST request
+     //2. we need the form data
+     // Low Level
+     event.preventDefault();
+     $.ajax({
+       type: "POST",
+       url: this.action,
+       data: $(this).serialize(), //either JSON or querystring serializing
+       success: function(response) {
+         // empties the input after successful action
+         $("#expense_description").val("")
+         $("#expense_amount").val("")
+         $("#expense_category_name").val("")
 
-        let expense = new Expense(response)
-        expense.updateHtml()
-      }
-      //end of success
-    });
-    //end of ajax
-    return false;
-  })
-  //end of submit new expense
+         let expense = new Expense(response)
+         expense.updateHtml()
+       }
+       //end of success
+     });
+     //end of ajax
+     return false;
+   })
+   //end of submit new expense
 
   ///expenses.json
   $(".wrapper").on("click", "#previous-button", function(e) {
@@ -128,9 +127,20 @@ var attachListeners = function() {
     $("#expense_category_name").val("")
     event.preventDefault();
   })
-  //end of cancl expense
+  //end of cancel expense
 
-  
+  //edit expense
+  $("div.exp-container").on("click", "a#pencil-icon", (e)=> {
+    e.preventDefault();
+    let $pencilIcon = e.target
+    let url = $pencilIcon.href
+    $.get(url, function(response){
+      $(".expense-form-container").hide();
+      $(".edit-expense").html(response)
+    })
+    // end of get call
+  })
+  //end of pencil icon
 
 }
 //end of attachListeners
