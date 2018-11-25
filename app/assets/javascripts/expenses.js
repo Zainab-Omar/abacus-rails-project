@@ -121,6 +121,17 @@ var attachListeners = function() {
   })
   // end of next-button
 
+  //clears the input when cancel is clicked
+  $("#cancel-add-expense").on("click", function(event) {
+    $("#expense_description").val("")
+    $("#expense_amount").val("0.00")
+    $("#expense_category_name").val("")
+    event.preventDefault();
+  })
+  //end of cancl expense
+
+  
+
 }
 //end of attachListeners
 //
