@@ -49,6 +49,7 @@ var attachListeners = function() {
   })
   //end of submit new expense
 
+  ///expenses.json
   $(".wrapper").on("click", "#previous-button", function(e) {
     e.preventDefault();
     let previousId = parseInt($("#previous-button").attr("data-groupid"))-1
@@ -83,6 +84,7 @@ var attachListeners = function() {
     //end of get call
   })
   // end of previous-button
+
 
   $(".wrapper").on("click", "#next-button", function(e) {
     e.preventDefault();
@@ -141,8 +143,6 @@ function loadExpenses(){
         trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${expense.group.id}/expenses/${expense.id}"></a>` + '</td></tr>';
       })
       $table.append(trHTML)
-    } else {
-      $("div.exp-container").remove();
     }
     //end of if/else
   })
