@@ -7,20 +7,20 @@ $(document).ready(function(){
 
 var attachListeners = function() {
 // RENDER HTML
-  $("a#group-summary").on("click", function(event){
-    // the jquery object
-    let $button = $(this)
-    let url = this.pathname
-    $.get(url, function(response){
-    }).success(function(response){
-      $("div.summary").html(response)
-      $button.hide();
-    })
-    .fail(function(response){
-      console.log("Error: " + response)
-    });
-    event.preventDefault();
-  });
+  // $("a#group-summary").on("click", function(event){
+  //   // the jquery object
+  //   let $button = $(this)
+  //   let url = this.pathname
+  //   $.get(url, function(response){
+  //   }).success(function(response){
+  //     $("div.summary").html(response)
+  //     $button.hide();
+  //   })
+  //   .fail(function(response){
+  //     console.log("Error: " + response)
+  //   });
+  //   event.preventDefault();
+  // });
 
 
   //Submits new expenses

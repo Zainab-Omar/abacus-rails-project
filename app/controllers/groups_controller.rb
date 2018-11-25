@@ -17,7 +17,7 @@ class GroupsController < ApplicationController
     @expenses = @group.expenses
     respond_to do |format|
       format.html {render :show}
-      format.json {render json: @group}
+      format.json {render json: @group, status: 200}
     end
     # render json: @group, :layout => false
     if @group.nil?

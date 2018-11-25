@@ -1,3 +1,3 @@
 class GroupExpenseSerializer < ActiveModel::Serializer
-  attributes :id, :name
+  attributes :id, :description, :amount, :created_at, :category
 end
