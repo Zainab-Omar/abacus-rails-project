@@ -16,11 +16,12 @@ Rails.application.routes.draw do
   resources :users, only: [:create, :show]
 
   #route for most_popular group list
-  get '/groups/most_popular' => 'groups#most_popular'
+  get 'most_popular_group_list' => 'groups#most_popular'
+  #route for all groups
+  get '/group_list' => 'groups#index'
+
   #route for just group expense list for jquery
   get '/groups/:id/lists' => 'groups#list'
-
-  get '/allgrouplist' => 'groups#index'
 
 
   resources :groups, except: [:show]  do
