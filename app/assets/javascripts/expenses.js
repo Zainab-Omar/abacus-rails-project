@@ -34,21 +34,14 @@ var attachListeners = function() {
        data: $(this).serialize(), //either JSON or querystring serializing
        success: function(response) {
          // empties the input after successful action
-         $("#expense_description").val("")
-         $("#expense_amount").val("")
-         $("#expense_category_name").val("")
-         let $total = $("div.total")
+         emptyInput();
 
-         let expense = new Expense(response)
+         let expense = new Expense(response);
          // expense => {id: 211, description: "5 Cents", amount: 0.05, date: "11/25/2018", category_name: "Gifts", …}
-         debugger
-         expense.updateHtml()
-         let currentTotal = parseFloat($("div.total").text().replace('TOTAL $', ''))
-         let amount = expense.amount;
-         let total = currentTotal + expense.amount;
-         total = total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
-         let totalHTML = '<h3>TOTAL $' + total + '</h3>'
-         $total.html($(totalHTML));
+         expense.addExpenseHtml();
+         //adds the newly created expense to the bottom of the table
+         expense.updateTotalHtml();
+         //updates the total amount
        }
        //end of success
      });
@@ -64,14 +57,16 @@ var attachListeners = function() {
     let url = "/groups/" + previousId + "/expenses.json"
     $.get(url, function(json){
       $("#group-name").text(json[0].group.name)
+
       //update the data-group-id for all buttons
-      $("#group-name").attr("data-groupid", previousId)
-      $("#previous-button").attr("data-groupid", previousId)
-      $("#next-button").attr("data-groupid", previousId)
-      //update groupid for form
-      $("form.new_expense").attr("action", "/groups/" + previousId + "/expenses")
-      //update table groupid
-      $("#groups-exp").attr("data-groupid", previousId)
+      updateGroupID(previousId)
+      // $("#group-name").attr("data-groupid", previousId)
+      // $("#previous-button").attr("data-groupid", previousId)
+      // $("#next-button").attr("data-groupid", previousId)
+      // //update groupid for form
+      // $("form.new_expense").attr("action", "/groups/" + previousId + "/expenses")
+      // //update table groupid
+      // $("#groups-exp").attr("data-groupid", previousId)
 
       let $table = $("#groups-exp tbody")
       $table.remove();
@@ -101,15 +96,16 @@ var attachListeners = function() {
       debugger
       $("#group-name").text(json[0].group.name)
       //update the data-group-id for all buttons
-      $("#group-name").attr("data-groupid", nextId)
-      $("#previous-button").attr("data-groupid", nextId)
-      $("#next-button").attr("data-groupid", nextId)
-      //update groupid for form
-      $("form.new_expense").attr("action", "/groups/" + nextId + "/expenses")
-      //update table groupid
-      $("#groups-exp").attr("data-groupid", nextId)
-      //update total
-      $(".total_amount").attr("data-groupid", nextId)
+      updateGroupID(nextId)
+      // $("#group-name").attr("data-groupid", nextId)
+      // $("#previous-button").attr("data-groupid", nextId)
+      // $("#next-button").attr("data-groupid", nextId)
+      // //update groupid for form
+      // $("form.new_expense").attr("action", "/groups/" + nextId + "/expenses")
+      // //update table groupid
+      // $("#groups-exp").attr("data-groupid", nextId)
+      // //update total
+      // $(".total_amount").attr("data-groupid", nextId)
 
       let $table = $("#groups-exp tbody")
       $table.remove();
@@ -132,12 +128,31 @@ var attachListeners = function() {
 
   //clears the input when cancel is clicked
   $("#cancel-add-expense").on("click", function(event) {
-    $("#expense_description").val("")
-    $("#expense_amount").val("0.00")
-    $("#expense_category_name").val("")
+    emptyInput();
+    // $("#expense_description").val("")
+    // $("#expense_amount").val("0.00")
+    // $("#expense_category_name").val("")
     event.preventDefault();
   })
   //end of cancel expense
+
+  function emptyInput(){
+    $("#expense_description").val("")
+    $("#expense_amount").val("0.00")
+    $("#expense_category_name").val("")
+  }
+
+  function updateGroupID(newGroupId){
+    //update the data-group-id for all buttons
+    $("#group-name").attr("data-groupid", newGroupId)
+    $("#previous-button").attr("data-groupid", newGroupId)
+    $("#next-button").attr("data-groupid", newGroupId)
+    //update groupid for form
+    $("form.new_expense").attr("action", "/groups/" + newGroupId + "/expenses")
+    //update table groupid
+    $("#groups-exp").attr("data-groupid", newGroupId)
+  }
+
 
   //edit expense
   $("div.exp-container").on("click", "a#pencil-icon", (e)=> {
@@ -189,15 +204,6 @@ function loadExpenses(){
 }
 // end of loadExpenses
 
-// // Show all group expenses
-// function showExpenses(){
-//  debugger
-//  let url = this.location.href
-//  url += "/expenses.json"
-//
-// }
-// // end of showExpenses
-
   class Expense{
     constructor(json) {
       this.id = json.id
@@ -223,26 +229,25 @@ function loadExpenses(){
   }
   // end of formatDate
 
-  // function updateTotal(amount) {
-  //   $("")
-  // }
-
-
-  Expense.prototype.updateHtml = function(){
-
+  Expense.prototype.addExpenseHtml = function(){
+      // adds the newly created expense to bototm of the table
       let trHTML = "";
       trHTML += '<tr><td>' + this.description + '</td><td> $' + this.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</td><td>'
       trHTML += this.date + '</td><td>' + this.category_name + '</td>'
       trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${this.groupId}/expenses/${this.id}/edit">` + '</td>'
       trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${this.groupId}/expenses/${this.id}"></a>` + '</td></tr>';
-
       $("#groups-exp").append(trHTML)
-      // let totalHTML = "";
-      // let current_total = parseFloat($(".total_amount").text().slice(1))
-      // debugger
-      // let total_amount = (this.amount + current_total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
-      // totalHTML += '<h3> $' + total_amount + '</h3>'
-      // debugger
-      // $(".total_amount").append(totalHTML)
+    }
+    //end of prototype addExpenseHtml
+
+  Expense.prototype.updateTotalHtml = function(){
+      // updates the total amount
+      let $total = $("div.total")
+      let currentTotal = parseFloat($("div.total").text().replace('TOTAL $', ''))
+      let amount = this.amount;
+      let total = currentTotal + this.amount;
+      total = total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+      let totalHTML = '<h3>TOTAL $' + total + '</h3>'
+      $total.html($(totalHTML));
   }
-  //end of prototype updateHtml
+  //end of prototype updateTotalHtml
