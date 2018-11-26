@@ -41,7 +41,6 @@ var attachListeners = function() {
          expense.addExpenseHtml();
          //adds the newly created expense to the bottom of the table
          if ($.trim($("div.total").html())==''){
-           debugger
            //if the total is empty, for the first expense
            $("div.total").html('<h3> TOTAL $' + expense.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</h3>')
          } else {
@@ -61,9 +60,10 @@ var attachListeners = function() {
   $(".wrapper").on("click", "#previous-button", function(e) {
     e.preventDefault();
     let previousId = parseInt($("#previous-button").attr("data-groupid"))-1
-    let url = "/groups/" + previousId + "/expenses.json"
+    let url = "/groups/" + previousId + ".json"
     $.get(url, function(json){
-      $("#group-name").text(json[0].group.name)
+      debugger
+      $("#group-name").text(json.name)
 
       //update the data-group-id for all buttons
       updateGroupId(previousId)
@@ -82,7 +82,7 @@ var attachListeners = function() {
     let nextId = parseInt($("#previous-button").attr("data-groupid"))+1
     let url = "/groups/" + nextId + "/expenses.json"
     $.get(url, function(json){
-      $("#group-name").text(json[0].group.name)
+      $("#group-name").text(json.name)
       //update the data-group-id for all buttons
       updateGroupId(nextId)
       //remove previous table
@@ -217,11 +217,11 @@ function loadExpenses(){
 
   Expense.prototype.updateTotalHtml = function(){
       // updates the total amount
-      debugger
       let $total = $("div.total")
-      let currentTotal = parseFloat($("div.total").text().replace('TOTAL $', ''))
+      let currentTotal = Number($("div.total").text().replace(/[^0-9.-]+/g,""))
       let amount = this.amount;
       let total = currentTotal + this.amount;
+
       total = total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
       let totalHTML = '<h3>TOTAL $' + total + '</h3>'
       $total.html($(totalHTML));
