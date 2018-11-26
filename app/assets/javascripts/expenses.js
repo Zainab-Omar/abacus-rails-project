@@ -40,8 +40,15 @@ var attachListeners = function() {
          // expense => {id: 211, description: "5 Cents", amount: 0.05, date: "11/25/2018", category_name: "Gifts", …}
          expense.addExpenseHtml();
          //adds the newly created expense to the bottom of the table
-         expense.updateTotalHtml();
-         //updates the total amount
+         if ($.trim($("div.total").html())==''){
+           debugger
+           //if the total is empty, for the first expense
+           $("div.total").html('<h3> TOTAL $' + expense.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</h3>')
+         } else {
+           expense.updateTotalHtml();
+           //updates the total amount
+         }
+         //end of if/else
        }
        //end of success
      });
@@ -208,6 +215,7 @@ function loadExpenses(){
 
   Expense.prototype.updateTotalHtml = function(){
       // updates the total amount
+      debugger
       let $total = $("div.total")
       let currentTotal = parseFloat($("div.total").text().replace('TOTAL $', ''))
       let amount = this.amount;

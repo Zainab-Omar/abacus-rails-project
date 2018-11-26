@@ -12,7 +12,7 @@
   <tbody>
 
     <% groups.each do |group| %>
-      <tr id="row2">
+      <tr id="row2", data-groupId="<%=group.id%>">
         <td><%= group.name%></td>
         <td><%= group.group_status %></td>
         <td><%= link_to "", group_path(group), class: 'glyphicon glyphicon-eye-open', id: 'eye-icon' %></td>

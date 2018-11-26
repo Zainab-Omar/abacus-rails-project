@@ -18,19 +18,7 @@ function createGroup() {
         // empties the input after successful action
         $("#group_name").val("")
         let group = new Group(response)
-        debugger
         group.addGroupHtml()
-        // let trHTML = "";
-        //     trHTML += '<tr><td>' + group.name + '</td><td>' + group.status + '</td>'
-        //     trHTML += '<td>' + `<a class="glyphicon glyphicon-eye-open" id="eye-icon" href="/groups/${group.id}"></a>` + '</td>'
-        //     trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${group.id}/edit">` +  '</td>'
-        //     trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${group.id}"></a>` + '</td></tr>'
-        // if (group.status === "Active") {
-        //   $("div.active_groups table").prepend(trHTML)
-        // } else {
-        //   $("div.inactive_groups table").prepend(trHTML)
-        // }
-        // //end of if else
       }
       // end of success
     })
@@ -50,6 +38,7 @@ function attachGroupListeners(){
 
   $("div.groups-container").on("click", "a#pencil-icon", (e)=> {
     e.preventDefault();
+    $("#flash_notice").html("")
     let $pencilIcon = e.target
     let url = $pencilIcon.href
     $.get(url, function(response){
@@ -62,16 +51,30 @@ function attachGroupListeners(){
 
   // $("div.groups-container").on("click", "a#trash-icon", (e)=> {
   //   alert("You clicked me")
-  //   e.preventDefault();
-  //   let url = e.target.href
-  //   $.ajax({
-  //     type: "DELETE",
-  //     url: url,
-  //
-  //   })
   //   debugger
+  //   e.preventDefault();
+  //   //e.target => <a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/165"></a>
+  //   let trashIcon = e.target
+  //   let url = trashIcon.href
+  //   debugger
+  //   // url => "http://localhost:3000/groups/165"
+  //   let groupId = trashIcon.pathname.replace("/groups/", "")
+  //   // groupId = "165"
+  //
+  //   // $.post(url, {id:groupId, action:'delete'});
+  //   debugger
+  //   $.ajax({
+  //     url: url,
+  //     type: 'POST',
+  //     data: {_method: 'delete'}
+  //   })
+  //     .done(function( data ) {
+  //       console.log(data);
+  //     });
+  //   //end of success
+  //     // trashIcon.parentNode.parentElement.remove();
   // })
-  // //end of trash icon
+  // // //end of trash icon
 
 
   // $("a#pencil-icon").on("click", function(event) {
@@ -113,7 +116,6 @@ class Group{
 
 Group.prototype.addGroupHtml = function(){
     // adds the newly created group to top of the table
-    debugger
     let trHTML = "";
         trHTML += '<tr><td>' + this.name + '</td><td>' + this.status + '</td>'
         trHTML += '<td>' + `<a class="glyphicon glyphicon-eye-open" id="eye-icon" href="/groups/${this.id}"></a>` + '</td>'
