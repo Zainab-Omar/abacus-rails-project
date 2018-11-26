@@ -1,26 +1,13 @@
 $(document).ready(function(){
   attachListeners();
+
+  //loads only on the groups show page
   if(window.location.href.indexOf("groups") > -1){
    loadExpenses();
   }
 })
 
 var attachListeners = function() {
-// RENDER HTML
-  // $("a#group-summary").on("click", function(event){
-  //   // the jquery object
-  //   let $button = $(this)
-  //   let url = this.pathname
-  //   $.get(url, function(response){
-  //   }).success(function(response){
-  //     $("div.summary").html(response)
-  //     $button.hide();
-  //   })
-  //   .fail(function(response){
-  //     console.log("Error: " + response)
-  //   });
-  //   event.preventDefault();
-  // });
 
   //Submits new expenses
    $("form.new_expense").on("submit", function(event) {
