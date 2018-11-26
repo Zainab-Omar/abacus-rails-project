@@ -37,9 +37,18 @@ var attachListeners = function() {
          $("#expense_description").val("")
          $("#expense_amount").val("")
          $("#expense_category_name").val("")
+         let $total = $("div.total")
 
          let expense = new Expense(response)
+         // expense => {id: 211, description: "5 Cents", amount: 0.05, date: "11/25/2018", category_name: "Gifts", …}
+         debugger
          expense.updateHtml()
+         let currentTotal = parseFloat($("div.total").text().replace('TOTAL $', ''))
+         let amount = expense.amount;
+         let total = currentTotal + expense.amount;
+         total = total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+         let totalHTML = '<h3>TOTAL $' + total + '</h3>'
+         $total.html($(totalHTML));
        }
        //end of success
      });
@@ -162,6 +171,7 @@ function loadExpenses(){
     if (json.length) {
       //checks if the json array is empty
       json.forEach(function(expense){
+        // expense => {id: 210, description: "5", amount: 5, created_at: "2018-11-26T03:57:56.291Z", category: {…}, …}amount: 5category: {name: "Gifts"}created_at: "2018-11-26T03:57:56.291Z"description: "5"group: {id: 159, name: "5"}id: 210__proto__: Object
         trHTML += '<tr><td>' + expense.description + '</td><td> $' + expense.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</td><td>'
         trHTML += formatDate(expense.created_at) + '</td><td>' + expense.category.name + '</td>'
         trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${expense.group.id}/expenses/${expense.id}/edit">` + '</td>'
