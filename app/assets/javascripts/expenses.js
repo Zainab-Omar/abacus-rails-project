@@ -125,18 +125,6 @@ function loadExpenses(){
 }
 // end of loadExpenses
 
-  class Expense{
-    constructor(json) {
-      this.id = json.id
-      this.description = json.description;
-      this.amount = json.amount;
-      this.date = formatDate(json.created_at);
-      this.category_name = json.category.name;
-      this.groupId = json.group.id;
-    }
-  }
-  //end of class Expense
-
   function formatDate(date) {
     var d = new Date(date)
         month = '' + (d.getMonth() + 1),
@@ -194,6 +182,18 @@ function loadExpenses(){
     }
   }
   //end of updateTableHtml
+
+  class Expense{
+    constructor(json) {
+      this.id = json.id
+      this.description = json.description;
+      this.amount = json.amount;
+      this.date = formatDate(json.created_at);
+      this.category_name = json.category.name;
+      this.groupId = json.group.id;
+    }
+  }
+  //end of class Expense
 
   Expense.prototype.addExpenseHtml = function(){
       // adds the newly created expense to bototm of the table

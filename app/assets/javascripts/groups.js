@@ -18,17 +18,19 @@ function createGroup() {
         // empties the input after successful action
         $("#group_name").val("")
         let group = new Group(response)
-        let trHTML = "";
-            trHTML += '<tr><td>' + group.name + '</td><td>' + group.status + '</td>'
-            trHTML += '<td>' + `<a class="glyphicon glyphicon-eye-open" id="eye-icon" href="/groups/${group.id}"></a>` + '</td>'
-            trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${group.id}/edit">` +  '</td>'
-            trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${group.id}"></a>` + '</td></tr>'
-        if (group.status === "Active") {
-          $("div.active_groups table").prepend(trHTML)
-        } else {
-          $("div.inactive_groups table").prepend(trHTML)
-        }
-        //end of if else
+        debugger
+        group.addGroupHtml()
+        // let trHTML = "";
+        //     trHTML += '<tr><td>' + group.name + '</td><td>' + group.status + '</td>'
+        //     trHTML += '<td>' + `<a class="glyphicon glyphicon-eye-open" id="eye-icon" href="/groups/${group.id}"></a>` + '</td>'
+        //     trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${group.id}/edit">` +  '</td>'
+        //     trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${group.id}"></a>` + '</td></tr>'
+        // if (group.status === "Active") {
+        //   $("div.active_groups table").prepend(trHTML)
+        // } else {
+        //   $("div.inactive_groups table").prepend(trHTML)
+        // }
+        // //end of if else
       }
       // end of success
     })
@@ -109,25 +111,19 @@ class Group{
 }
 //end of class Group
 
-// //Submits new expenses
-// $("form.new_expense").on("submit", function(event) {
-//   //1. we need URL to submit the POST request
-//   //2. we need the form data
-//   // Low Level
-//   event.preventDefault();
-//   $.ajax({
-//     type: "POST",
-//     url: this.action,
-//     data: $(this).serialize(), //either JSON or querystring serializing
-//     success: function(response) {
-//       // empties the input after successful action
-//       $("#expense_description").val("")
-//       $("#expense_amount").val("")
-//       $("#expense_category_name").val("")
-//
-//       let expense = new Expense(response)
-//       expense.updateHtml()
-//     }
-//   });
-//   return false;
-// })
+Group.prototype.addGroupHtml = function(){
+    // adds the newly created group to top of the table
+    debugger
+    let trHTML = "";
+        trHTML += '<tr><td>' + this.name + '</td><td>' + this.status + '</td>'
+        trHTML += '<td>' + `<a class="glyphicon glyphicon-eye-open" id="eye-icon" href="/groups/${this.id}"></a>` + '</td>'
+        trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${this.id}/edit">` +  '</td>'
+        trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${this.id}"></a>` + '</td></tr>'
+    if (this.status === "Active") {
+      $("div.active_groups table").prepend(trHTML)
+    } else {
+      $("div.inactive_groups table").prepend(trHTML)
+    }
+    //end of if else
+  }
+  //end of prototype addGroupHtml
