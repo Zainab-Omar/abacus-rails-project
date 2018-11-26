@@ -59,29 +59,11 @@ var attachListeners = function() {
       $("#group-name").text(json[0].group.name)
 
       //update the data-group-id for all buttons
-      updateGroupID(previousId)
-      // $("#group-name").attr("data-groupid", previousId)
-      // $("#previous-button").attr("data-groupid", previousId)
-      // $("#next-button").attr("data-groupid", previousId)
-      // //update groupid for form
-      // $("form.new_expense").attr("action", "/groups/" + previousId + "/expenses")
-      // //update table groupid
-      // $("#groups-exp").attr("data-groupid", previousId)
-
+      updateGroupId(previousId)
+      //remove previous table
       let $table = $("#groups-exp tbody")
       $table.remove();
-      let trHTML = "";
-      if (json.length){
-        // checks if the json array is empty
-        json.forEach(function(expense){
-          trHTML += '<tr><td>' + expense.description + '</td><td> $' + expense.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</td><td>'
-          trHTML += formatDate(expense.created_at) + '</td><td>' + expense.category.name + '</td>'
-          trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${expense.group.id}/expenses/${expense.id}/edit">` + '</td>'
-          trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${expense.group.id}/expenses/${expense.id}"></a>` + '</td></tr>';
-        })
-        $("#groups-exp").append(trHTML)
-      }
-      // end of if
+      updateTableHtml(json)
     })
     //end of get call
   })
@@ -93,34 +75,13 @@ var attachListeners = function() {
     let nextId = parseInt($("#previous-button").attr("data-groupid"))+1
     let url = "/groups/" + nextId + "/expenses.json"
     $.get(url, function(json){
-      debugger
       $("#group-name").text(json[0].group.name)
       //update the data-group-id for all buttons
-      updateGroupID(nextId)
-      // $("#group-name").attr("data-groupid", nextId)
-      // $("#previous-button").attr("data-groupid", nextId)
-      // $("#next-button").attr("data-groupid", nextId)
-      // //update groupid for form
-      // $("form.new_expense").attr("action", "/groups/" + nextId + "/expenses")
-      // //update table groupid
-      // $("#groups-exp").attr("data-groupid", nextId)
-      // //update total
-      // $(".total_amount").attr("data-groupid", nextId)
-
+      updateGroupId(nextId)
+      //remove previous table
       let $table = $("#groups-exp tbody")
       $table.remove();
-      let trHTML = "";
-      if (json.length){
-        // checks if the json array is empty
-        json.forEach(function(expense){
-          trHTML += '<tr><td>' + expense.description + '</td><td> $' + expense.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</td><td>'
-          trHTML += formatDate(expense.created_at) + '</td><td>' + expense.category.name + '</td>'
-          trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${expense.group.id}/expenses/${expense.id}/edit">` + '</td>'
-          trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${expense.group.id}/expenses/${expense.id}"></a>` + '</td></tr>';
-        })
-        $("#groups-exp").append(trHTML)
-      }
-      // end of if
+      updateTableHtml(json)
     })
     //end of get call
   })
@@ -136,25 +97,7 @@ var attachListeners = function() {
   })
   //end of cancel expense
 
-  function emptyInput(){
-    $("#expense_description").val("")
-    $("#expense_amount").val("0.00")
-    $("#expense_category_name").val("")
-  }
-
-  function updateGroupID(newGroupId){
-    //update the data-group-id for all buttons
-    $("#group-name").attr("data-groupid", newGroupId)
-    $("#previous-button").attr("data-groupid", newGroupId)
-    $("#next-button").attr("data-groupid", newGroupId)
-    //update groupid for form
-    $("form.new_expense").attr("action", "/groups/" + newGroupId + "/expenses")
-    //update table groupid
-    $("#groups-exp").attr("data-groupid", newGroupId)
-  }
-
-
-  //edit expense
+  //pencil icone - edit expense
   $("div.exp-container").on("click", "a#pencil-icon", (e)=> {
     e.preventDefault();
     let $pencilIcon = e.target
@@ -169,38 +112,16 @@ var attachListeners = function() {
 
 }
 //end of attachListeners
-//
+
+
 // Loads all expenses
 function loadExpenses(){
   let url = this.location.href
   url += "/expenses.json"
   $.get(url, function(json){
-    //json object json = [{}, {}, {}]
-    let $table = $("#groups-exp")
-    let trHTML = "";
-    let amount = "";
-    let total = 0;
-    let totalHTML = "";
-    //iterate over each expense within json
-    // Req 2: Renders a has-many relationship from a JSON response
-    if (json.length) {
-      //checks if the json array is empty
-      json.forEach(function(expense){
-        // expense => {id: 210, description: "5", amount: 5, created_at: "2018-11-26T03:57:56.291Z", category: {…}, …}amount: 5category: {name: "Gifts"}created_at: "2018-11-26T03:57:56.291Z"description: "5"group: {id: 159, name: "5"}id: 210__proto__: Object
-        trHTML += '<tr><td>' + expense.description + '</td><td> $' + expense.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</td><td>'
-        trHTML += formatDate(expense.created_at) + '</td><td>' + expense.category.name + '</td>'
-        trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${expense.group.id}/expenses/${expense.id}/edit">` + '</td>'
-        trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${expense.group.id}/expenses/${expense.id}"></a>` + '</td></tr>';
-        amount = parseFloat(expense.amount)
-        total += amount
-      })
-      $table.append(trHTML)
-      totalHTML += '<h3> TOTAL $' + total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</h3>'
-      $("div.total").append(totalHTML)
-    }
-    //end of if/else
+    updateTableHtml(json)
   })
-
+  //end of get call
 }
 // end of loadExpenses
 
@@ -228,6 +149,51 @@ function loadExpenses(){
     return [month, day, year].join('/');
   }
   // end of formatDate
+
+  function emptyInput(){
+    $("#expense_description").val("")
+    $("#expense_amount").val("0.00")
+    $("#expense_category_name").val("")
+  }
+  //end of emptyInput
+
+  function updateGroupId(newGroupId){
+    //update the data-group-id for all buttons
+    $("#group-name").attr("data-groupid", newGroupId)
+    $("#previous-button").attr("data-groupid", newGroupId)
+    $("#next-button").attr("data-groupid", newGroupId)
+    //update groupid for form
+    $("form.new_expense").attr("action", "/groups/" + newGroupId + "/expenses")
+    //update table groupid
+    $("#groups-exp").attr("data-groupid", newGroupId)
+  }
+  //end of UpdateGroupID
+
+  function updateTableHtml(json){
+    let amount = "";
+    let total = 0;
+    let totalHTML = "";
+    //iterate over each expense within json
+    if (json.length) {
+      //checks if the json array is empty
+      json.forEach(function(expense){
+        // expense => {id: 210, description: "5", amount: 5, created_at: "2018-11-26T03:57:56.291Z", category: {…}, …}amount: 5category: {name: "Gifts"}created_at: "2018-11-26T03:57:56.291Z"description: "5"group: {id: 159, name: "5"}id: 210__proto__: Object
+        let $table = $("#groups-exp")
+        let trHTML = "";
+
+        trHTML += '<tr><td>' + expense.description + '</td><td> $' + expense.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</td><td>'
+        trHTML += formatDate(expense.created_at) + '</td><td>' + expense.category.name + '</td>'
+        trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${expense.group.id}/expenses/${expense.id}/edit">` + '</td>'
+        trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${expense.group.id}/expenses/${expense.id}"></a>` + '</td></tr>';
+        $table.append(trHTML)
+        amount = parseFloat(expense.amount)
+        total += amount
+      })
+        totalHTML += '<h3> TOTAL $' + total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</h3>'
+        $("div.total").html($(totalHTML));
+    }
+  }
+  //end of updateTableHtml
 
   Expense.prototype.addExpenseHtml = function(){
       // adds the newly created expense to bototm of the table
