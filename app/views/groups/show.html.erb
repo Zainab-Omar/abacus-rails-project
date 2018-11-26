@@ -20,20 +20,19 @@
   </div>
 
   <div class="edit-expense">
-
   </div>
-
-  <!--  <%= render :partial => 'expenses/summary', :locals => {:group => @group} %> -->
 
   <div class="total">
-
   </div>
 
 
-    <!-- <h3><strong>Total Amount: </strong>
+  <!-- <h3><strong>Total Amount: </strong>
       <div class="total_amount", data-groupId="<%= @group.id %>", data-total="<%= @group.total_expenses %>"><%= number_to_currency(@group.total_expenses)%></div>
     </h3>
   <br> -->
+
+  <!--  <%= render :partial => 'expenses/summary', :locals => {:group => @group} %> -->
+
 
   <% else %>
   <h3 class = "wrapper"> To View Summary you need to be a member of this group</h3>

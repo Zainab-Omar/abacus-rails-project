@@ -62,14 +62,14 @@ var attachListeners = function() {
     let previousId = parseInt($("#previous-button").attr("data-groupid"))-1
     let url = "/groups/" + previousId + ".json"
     $.get(url, function(json){
-      debugger
+      //update group name
       $("#group-name").text(json.name)
-
       //update the data-group-id for all buttons
       updateGroupId(previousId)
-      //remove previous table
+      //remove previous table and total amount
       let $table = $("#groups-exp tbody")
       $table.remove();
+      $("div.total").html("");
       updateTableHtml(json)
     })
     //end of get call
@@ -82,12 +82,14 @@ var attachListeners = function() {
     let nextId = parseInt($("#previous-button").attr("data-groupid"))+1
     let url = "/groups/" + nextId + ".json"
     $.get(url, function(json){
+      //update group name
       $("#group-name").text(json.name)
       //update the data-group-id for all buttons
       updateGroupId(nextId)
-      //remove previous table
+      //remove previous table and total amount
       let $table = $("#groups-exp tbody")
       $table.remove();
+      $("div.total").html("");
       updateTableHtml(json)
     })
     //end of get call
@@ -183,6 +185,7 @@ function loadExpenses(){
         trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${groupId}/expenses/${expense.id}/edit">` + '</td>'
         trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${groupId}/expenses/${expense.id}"></a>` + '</td></tr>';
         $table.append(trHTML)
+        debugger
         amount = parseFloat(expense.amount)
         total += amount
       })
