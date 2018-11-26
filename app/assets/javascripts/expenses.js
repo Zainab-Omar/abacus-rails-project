@@ -54,7 +54,6 @@ var attachListeners = function() {
     let previousId = parseInt($("#previous-button").attr("data-groupid"))-1
     let url = "/groups/" + previousId + "/expenses.json"
     $.get(url, function(json){
-      debugger
       $("#group-name").text(json[0].group.name)
       //update the data-group-id for all buttons
       $("#group-name").attr("data-groupid", previousId)
@@ -100,6 +99,8 @@ var attachListeners = function() {
       $("form.new_expense").attr("action", "/groups/" + nextId + "/expenses")
       //update table groupid
       $("#groups-exp").attr("data-groupid", nextId)
+      //update total
+      $(".total_amount").attr("data-groupid", nextId)
 
       let $table = $("#groups-exp tbody")
       $table.remove();
@@ -153,6 +154,9 @@ function loadExpenses(){
     //json object json = [{}, {}, {}]
     let $table = $("#groups-exp")
     let trHTML = "";
+    let amount = "";
+    let total = 0;
+    let totalHTML = "";
     //iterate over each expense within json
     // Req 2: Renders a has-many relationship from a JSON response
     if (json.length) {
@@ -162,8 +166,12 @@ function loadExpenses(){
         trHTML += formatDate(expense.created_at) + '</td><td>' + expense.category.name + '</td>'
         trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${expense.group.id}/expenses/${expense.id}/edit">` + '</td>'
         trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${expense.group.id}/expenses/${expense.id}"></a>` + '</td></tr>';
+        amount = parseFloat(expense.amount)
+        total += amount
       })
       $table.append(trHTML)
+      totalHTML += '<h3> TOTAL $' + total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</h3>'
+      $("div.total").append(totalHTML)
     }
     //end of if/else
   })
@@ -205,6 +213,10 @@ function loadExpenses(){
   }
   // end of formatDate
 
+  // function updateTotal(amount) {
+  //   $("")
+  // }
+
 
   Expense.prototype.updateHtml = function(){
 
@@ -215,5 +227,12 @@ function loadExpenses(){
       trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${this.groupId}/expenses/${this.id}"></a>` + '</td></tr>';
 
       $("#groups-exp").append(trHTML)
+      // let totalHTML = "";
+      // let current_total = parseFloat($(".total_amount").text().slice(1))
+      // debugger
+      // let total_amount = (this.amount + current_total).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+      // totalHTML += '<h3> $' + total_amount + '</h3>'
+      // debugger
+      // $(".total_amount").append(totalHTML)
   }
   //end of prototype updateHtml
