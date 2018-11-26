@@ -128,7 +128,6 @@ function loadExpenses(){
   let url = this.location.href
   url += ".json"
   $.get(url, function(json){
-    debugger
     updateTableHtml(json)
   })
   //end of get call
@@ -185,7 +184,6 @@ function loadExpenses(){
         trHTML += '<td>' + `<a class="glyphicon glyphicon-pencil" id="pencil-icon" href="/groups/${groupId}/expenses/${expense.id}/edit">` + '</td>'
         trHTML += '<td>' + `<a data-confirm="Are you sure?" class="glyphicon glyphicon-trash" id="trash-icon" rel="nofollow" data-method="delete" href="/groups/${groupId}/expenses/${expense.id}"></a>` + '</td></tr>';
         $table.append(trHTML)
-        debugger
         amount = parseFloat(expense.amount)
         total += amount
       })

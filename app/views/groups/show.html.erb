@@ -5,8 +5,8 @@
 
 <section class="next-previous">
   <!-- next/previous buttons -->
-  <a href="#" class="js-more btn btn-primary", data-groupid="<%= @group.id %>", id="previous-button">Previous Group</a>
-  <a href="#" class="js-more btn btn-primary", data-groupid="<%= @group.id %>", id="next-button">Next Group</a><br>
+  <a href="#" class="js-more button", data-groupid="<%= @group.id %>", id="previous-button">Previous Group</a>
+  <a href="#" class="js-more button", data-groupid="<%= @group.id %>", id="next-button">Next Group</a><br>
 </section>
 <br>
   <!-- <%= link_to("Group Expenses", group_expenses_path(@group.id), :class => "button", :id => "load_expenses")%> -->
@@ -15,22 +15,29 @@
     <%= render 'expenses/table'%>
   </div>
 
+  <div class="total">
+  </div><br>
+
   <div class="expense-form-container">
     <%= render 'expenses/form' %>
-  </div>
+  </div><br>
 
   <div class="edit-expense">
-  </div>
-
-  <div class="total">
-  </div>
-
+  </div><br>
 
   <!-- <h3><strong>Total Amount: </strong>
       <div class="total_amount", data-groupId="<%= @group.id %>", data-total="<%= @group.total_expenses %>"><%= number_to_currency(@group.total_expenses)%></div>
     </h3>
   <br> -->
+  <!-- <a href="#" class="group-summary button-2", data-groupid="<%= @group.id %>", id="group-summary">Summary</a>-->
 
+
+  <!-- <button onclick="showGroupSummary()">Summary</button> -->
+  <button id="group-summary">Group Summary</button>
+  
+  <div class="group-summary">
+    <%= render :partial => 'expenses/summary', :locals => {:group => @group} %>
+  </div>
   <!--  <%= render :partial => 'expenses/summary', :locals => {:group => @group} %> -->
 
 

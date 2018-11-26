@@ -3,6 +3,7 @@ $(document).ready(function(){
   // if(window.location.href.indexOf("users") > -1){
   //   loadGroups();
   // }
+  // showGroupSummary();
   attachGroupListeners();
 })
 
@@ -97,8 +98,29 @@ function attachGroupListeners(){
   // })
   // // end of edit group form
 
+  // $("a#group-summary").on("click", function(event){
+  //   alert("You clicked summary")
+  //   event.preventDefault();
+  //   debugger
+  // })
+
+  $("div#group-expenses-page").on("click", "#group-summary", (e)=> {
+       $("div.group-summary").toggle();
+   });
+
 }
 //end of attachGroupListeners
+
+// function showGroupSummary() {
+//   debugger
+//   var $groupSummary = document.getElementById("group-summary");
+//   if ($groupSummary.style.display === "none") {
+//       $groupSummary.style.display = "block";
+//   } else {
+//       $groupSummary.style.display = "none";
+//   }
+// }
+// //end of showGroupSummary
 
 class Group{
   constructor(json) {
