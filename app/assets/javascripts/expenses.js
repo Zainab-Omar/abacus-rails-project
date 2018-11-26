@@ -80,7 +80,7 @@ var attachListeners = function() {
   $(".wrapper").on("click", "#next-button", function(e) {
     e.preventDefault();
     let nextId = parseInt($("#previous-button").attr("data-groupid"))+1
-    let url = "/groups/" + nextId + "/expenses.json"
+    let url = "/groups/" + nextId + ".json"
     $.get(url, function(json){
       $("#group-name").text(json.name)
       //update the data-group-id for all buttons
