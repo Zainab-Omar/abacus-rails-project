@@ -27,12 +27,14 @@ var attachListeners = function() {
          // expense => {id: 211, description: "5 Cents", amount: 0.05, date: "11/25/2018", category_name: "Gifts", …}
          expense.addExpenseHtml();
          //adds the newly created expense to the bottom of the table
+         expense.updateGroupSummaryHtml();
          if ($.trim($("div.total").html())==''){
            //if the total is empty, for the first expense
            $("div.total").html('<h3> TOTAL $' + expense.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + '</h3>')
          } else {
            expense.updateTotalHtml();
            //updates the total amount
+           expense.updateGroupSummaryCategory();
          }
          //end of if/else
        }
@@ -191,6 +193,15 @@ function loadExpenses(){
     }
   }
   //end of class Expense
+
+  Expense.prototype.updateGroupSummaryCategory = function(){
+    debugger
+    let $catTotal
+
+  }
+
+  // groups-summary-by-expense
+  // groups-summary-by-members
 
   Expense.prototype.addExpenseHtml = function(){
       // adds the newly created expense to bototm of the table

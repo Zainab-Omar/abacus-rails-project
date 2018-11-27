@@ -105,7 +105,7 @@ function attachGroupListeners(){
   // })
 
   $("div#group-expenses-page").on("click", "#group-summary", (e)=> {
-       $("div.group-summary").toggle();
+       $("div.group-summary-container").toggle();
    });
 
 }

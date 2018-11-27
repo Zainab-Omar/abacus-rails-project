@@ -1,4 +1,4 @@
-  <table id="groups-summary" class= "center">
+  <table align="center" class="groups-summary" id= "category-summary">
     <thead>
       <tr>
         <th colspan="2">By Catgeory</th>
@@ -15,7 +15,7 @@
   </table>
   <br>
 
-  <table id="groups-summary" class= "center">
+  <table align="center" class="groups-summary" class= "expense-min-max-avg">
     <thead>
       <tr>
         <th colspan="2">By Expense</th>
@@ -38,7 +38,7 @@
   </table>
   <br>
 
-  <table id="groups-summary" class= "center">
+  <table align="center" class="groups-summary" class= "split-by-member">
     <thead>
       <tr>
         <th colspan="2">Split By Member</th>
@@ -47,8 +47,8 @@
     <tbody>
       <% @group.users.each do |user|%>
         <tr>
-          <td width="60%"><%= user.username %></td>
-          <td width="40%"><%= number_to_currency(@group.split)%></td>
+          <td width="60%" data-userid="<%= user.id %>"><%= user.username %></td>
+          <td width="40%" class="splitAmount"><%= number_to_currency(@group.split)%></td>
         </tr>
       <% end %>
     </tbody>
